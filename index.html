@@ -97,6 +97,10 @@
             display: inline-block; /* Permet à chaque caractère d'être stylé individuellement */
         }
 
+        .cta h2 span.word { /* Nouveau style pour les mots */
+            white-space: nowrap; /* Empêche les mots d'être coupés par un retour à la ligne */
+        }
+
         .cta h2 span.char.darken {
             color: var(--darker-primary-color); /* Couleur plus foncée au survol de proximité */
         }
@@ -681,10 +685,12 @@
         const originalText = ctaHeading.textContent;
         const radius = 20; // Rayon en pixels autour du curseur pour assombrir les caractères (réduit à 20)
 
-        // Envelopper chaque caractère (y compris les espaces) dans un span
-        ctaHeading.innerHTML = originalText.split('').map(char => {
-            return `<span class="char">${char === ' ' ? '&nbsp;' : char}</span>`;
-        }).join('');
+        // Envelopper chaque mot dans un span avec white-space: nowrap;, puis chaque caractère
+        ctaHeading.innerHTML = originalText.split(' ').map(word => {
+            return `<span class="word">${word.split('').map(char => {
+                return `<span class="char">${char === ' ' ? '&nbsp;' : char}</span>`;
+            }).join('')}</span>`;
+        }).join('&nbsp;'); // Utiliser &nbsp; pour conserver les espaces entre les mots
 
         const charSpans = ctaHeading.querySelectorAll('.char');
 
