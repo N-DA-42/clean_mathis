@@ -15,7 +15,7 @@
             --shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
             --instagram-gradient: linear-gradient(135deg, #f58529, #ee2a7b, #d62976, #8e3b8e);
             --instagram-hover: linear-gradient(135deg, #e57625, #dd2570, #c2246a, #7e357e);
-            --darker-primary-color: #b02061; /* Une nuance légèrement plus foncée pour l'effet de survol */
+            --darker-primary-color: #b02061;
             /* Couleurs du logo Instagram pour les formules */
             --color-classique: #f58529; /* Orange */
             --color-premium: #ee2a7b;   /* Rose */
@@ -49,6 +49,22 @@
             padding: 0 20px;
             animation: fadeIn 0.8s ease-out;
         }
+        
+        header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.3);
+        }
+
+        header h1, header p {
+            position: relative;
+            z-index: 1;
+        }
+
 
         header h1 {
             font-size: 2.4rem;
@@ -82,27 +98,26 @@
             color: var(--primary-color);
             margin-bottom: 20px;
             font-weight: 600;
-            cursor: pointer; /* Indiquer que c'est interactif */
-            display: inline-block; /* Nécessaire pour que les spans de caractères fonctionnent */
-            position: relative; /* Pour le positionnement correct des spans */
-            line-height: 1.3; /* Ajuster la hauteur de ligne */
-            white-space: normal; /* Permettre les sauts de ligne naturels pour le texte global */
-            word-break: break-word; /* Cas de secours pour les mots très longs */
+            cursor: pointer;
+            display: inline-block;
+            position: relative;
+            line-height: 1.3;
+            white-space: normal;
+            word-break: break-word;
         }
 
-        /* Style pour les caractères individuels à l'intérieur du h2 */
         .cta h2 span.char {
-            color: var(--primary-color); /* Couleur par défaut */
-            transition: color 0.1s ease-out; /* Transition fluide pour le changement de couleur */
-            display: inline-block; /* Permet à chaque caractère d'être stylé individuellement */
+            color: var(--primary-color);
+            transition: color 0.1s ease-out;
+            display: inline-block;
         }
 
-        .cta h2 span.word { /* Nouveau style pour les mots */
-            white-space: nowrap; /* Empêche les mots d'être coupés par un retour à la ligne */
+        .cta h2 span.word {
+            white-space: nowrap;
         }
 
         .cta h2 span.char.darken {
-            color: var(--darker-primary-color); /* Couleur plus foncée au survol de proximité */
+            color: var(--darker-primary-color);
         }
 
         .cta p {
@@ -273,23 +288,127 @@
             font-size: 0.9rem;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
+        
+        /* --- NOUVEAUX STYLES POUR LA BANNIÈRE DE TARIFS --- */
+        .tarifs-banner-section {
+            padding: 40px 20px;
+            background-color: #fff;
+            margin: 40px 0;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        
+        .tarifs-banner-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .tarifs-banner {
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 30px;
+            background: var(--instagram-gradient);
+            border-radius: 16px;
+            text-align: center;
+            color: var(--light-color);
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: var(--shadow);
+        }
+        
+        .tarifs-banner:not(:last-child){
+            margin-bottom: 20px;
+        }
+        
+        .tarifs-banner:hover {
+            transform: scale(1.03);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+        
+        .tarifs-banner h2 {
+            margin: 0;
+            font-size: 2.2rem;
+            font-weight: 700;
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.2);
+        }
+        
+        .tarifs-banner p {
+            margin: 10px 0 0;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
 
+        /* --- NOUVEAUX STYLES POUR LA FENÊTRE MODALE --- */
+        .modal {
+            display: none; /* Cachée par défaut */
+            position: fixed; /* Reste en place */
+            z-index: 1000; /* Se place au-dessus de tout */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto; /* Permet le scroll si le contenu est trop grand */
+            background-color: rgba(0, 0, 0, 0.6); /* Fond noir semi-transparent */
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active {
+            display: flex; /* Affichée quand la classe active est ajoutée */
+        }
+
+        .modal-content {
+            position: relative;
+            background-color: #fefefe;
+            margin: auto;
+            border-radius: 16px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            width: 90%;
+            max-width: 950px; /* Largeur augmentée */
+            opacity: 0;
+            transform: scale(0.95);
+            animation: fadeInModal 0.3s ease-out forwards;
+        }
+        
+        @keyframes fadeInModal {
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .close-button {
+            color: #aaa;
+            position: absolute;
+            top: 10px;
+            right: 25px;
+            font-size: 35px;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: #333;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
+        /* Styles pour les blocs de service à l'intérieur de la modale */
         .service-blocks {
             display: flex;
             justify-content: space-between;
-            margin: 40px auto;
-            padding: 20px;
-            max-width: 850px;
-            background-color: #fff;
-            border-radius: 16px;
-            box-shadow: var(--shadow);
+            padding: 40px 20px 20px; /* Plus de padding en haut pour le bouton fermer */
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .service-block {
             flex: 1;
             padding: 20px;
             text-align: center;
-            border-right: 2px solid #f0f0f0; /* Ligne de séparation plus douce */
+            border-right: 2px solid #f0f0f0;
         }
 
         .service-block:last-child {
@@ -297,34 +416,24 @@
         }
         
         .service-block .formula-title {
-            font-size: 1.5rem; /* Taille de police plus grande */
-            font-weight: 700; /* Police plus grasse */
-            margin-bottom: 20px; /* Espace sous le titre */
-            line-height: 1.2; /* Ajuster la hauteur de ligne pour le saut de ligne */
-            /* --- MODIFICATIONS POUR L'ALIGNEMENT VERTICAL --- */
-            height: 3.6rem; /* Hauteur calculée pour 2 lignes (1.5rem * 1.2 * 2) */
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            height: 3.6rem;
             display: flex;
             justify-content: center;
             align-items: center;
         }
         
-        .service-block.classique .formula-title {
-            color: var(--color-classique);
-        }
-        
-        .service-block.premium .formula-title {
-            color: var(--color-premium);
-        }
-
-        .service-block.vip .formula-title {
-            color: var(--color-vip);
-        }
+        .service-block.classique .formula-title { color: var(--color-classique); }
+        .service-block.premium .formula-title { color: var(--color-premium); }
+        .service-block.vip .formula-title { color: var(--color-vip); }
 
         .service-block p {
             margin: 10px 0;
         }
 
-        /* --- NOUVEAU STYLE POUR L'ALIGNEMENT DU TEXTE EN GRAS --- */
         .service-block p:has(strong) {
             text-align: left;
         }
@@ -386,102 +495,47 @@
         }
 
         @media (max-width: 768px) {
-            header {
-                height: 35vh;
+            header { height: 35vh; }
+            header h1 { font-size: 2rem; }
+            header p { font-size: 1.1rem; }
+            .cta { padding: 25px; margin: 30px auto; }
+            .cta h2 { font-size: 1.7rem; }
+            .cta p { font-size: 1rem; }
+            .cta .phone { font-size: 1.4rem; padding: 14px 25px; }
+            .image-section h2 { font-size: 1.7rem; }
+            
+            .tarifs-banner h2 { font-size: 1.8rem; }
+            .tarifs-banner p { font-size: 1rem; }
+            
+            /* Styles responsives pour la modale */
+            .modal-content {
+                max-height: 90vh;
+                overflow-y: auto;
             }
-
-            header h1 {
-                font-size: 2rem;
-            }
-
-            header p {
-                font-size: 1.1rem;
-            }
-
-            .cta {
-                padding: 25px;
-                margin: 30px auto;
-            }
-
-            .cta h2 {
-                font-size: 1.7rem;
-            }
-
-            .cta p {
-                font-size: 1rem;
-            }
-
-            .cta .phone {
-                font-size: 1.4rem;
-                padding: 14px 25px;
-            }
-
-            .image-section h2 {
-                font-size: 1.7rem;
-            }
-
             .service-blocks {
                 flex-direction: column;
-                max-width: 500px;
             }
-
             .service-block {
                 border-right: none;
                 border-bottom: 2px solid #f0f0f0;
-                padding: 25px 15px; /* Augmentation du padding vertical */
+                padding: 25px 15px;
             }
+            .service-block:last-child { border-bottom: none; }
+            .service-block p:has(strong) { padding-left: 15%; }
 
-            .service-block:last-child {
-                border-bottom: none;
-            }
-            
-            .service-block p:has(strong) {
-                padding-left: 15%; /* Ajoute un peu d'espace à gauche pour un meilleur centrage visuel */
-            }
-
-            .handle-circle {
-                width: 36px;
-                height: 36px;
-            }
-
-            .handle-arrows {
-                font-size: 16px;
-            }
-
-            .satisfaction h2 {
-                font-size: 1.8rem;
-            }
-
-            .satisfaction img {
-                width: 150px;
-            }
+            .handle-circle { width: 36px; height: 36px; }
+            .handle-arrows { font-size: 16px; }
+            .satisfaction h2 { font-size: 1.8rem; }
+            .satisfaction img { width: 150px; }
         }
 
         @media (max-width: 480px) {
-            header h1 {
-                font-size: 1.8rem;
-            }
-
-            .cta {
-                padding: 20px;
-            }
-
-            .image-section {
-                padding: 40px 15px;
-            }
-            
-            .service-block p:has(strong) {
-                padding-left: 10%;
-            }
-
-            .handle-circle {
-                width: 32px;
-                height: 32px;
-            }
-
-            .handle-arrows {
-                font-size: 14px;
-            }
+            header h1 { font-size: 1.8rem; }
+            .cta { padding: 20px; }
+            .image-section { padding: 40px 15px; }
+            .service-block p:has(strong) { padding-left: 10%; }
+            .handle-circle { width: 32px; height: 32px; }
+            .handle-arrows { font-size: 14px; }
         }
     </style>
 </head>
@@ -517,62 +571,29 @@
     </div>
 </section>
 
-<!-- SECTION MODIFIÉE AVEC LES TITRES ET L'ALIGNEMENT CORRIGÉ -->
-<section class="service-blocks">
-    <div class="service-block classique">
-        <h3 class="formula-title">Formule <br>classique :</h3>
-        <p><strong>Aspiration :</strong></p>
-        <p>habitacle, coffre, tapis</p>
-        <p><strong>Nettoyage plastique :</strong></p>
-        <p>habitacle, coffre</p>
-        <p>+</p>
-        <p>ravivant plastique</p>
-        <p>+</p>
-        <p>vitre</p>
-        <p>Durée ≈ 1h30</p>
-        <p>45€</p>
+<!-- SECTION DES BANNIÈRES DE TARIFS -->
+<section class="tarifs-banner-section">
+    <div class="tarifs-banner">
+        <h2>Citadine & Berline</h2>
+        <p>Cliquez ici pour découvrir nos formules & tarifs</p>
     </div>
-    <div class="service-block premium">
-        <h3 class="formula-title">Formule <br>prémium :</h3>
-        <p><strong>Aspiration :</strong></p>
-        <p>habitacle, coffre, tapis</p>
-        <p><strong>Nettoyage plastique :</strong></p>
-        <p>habitacle, coffre</p>
-        <p>+</p>
-        <p>ravivant plastique pro</p>
-        <p><strong>Nettoyage en profondeur :</strong></p>
-        <p>moquette sol + coffre</p>
-        <p>+</p>
-        <p>produit désinfectant pro</p>
-        <p>+</p>
-        <p>produit décrassant</p>
-        <p>+</p>
-        <p>vitre</p>
-        <p>Durée ≈ 2h</p>
-        <p>69€</p>
+    <div class="tarifs-banner">
+        <h2>SUV & Break</h2>
+        <p>Cliquez ici pour découvrir nos formules & tarifs</p>
     </div>
-    <div class="service-block vip">
-        <h3 class="formula-title">Formule VIP :</h3>
-        <p><strong>Aspiration et shampouinage :</strong></p>
-        <p>habitacle, coffre, moquette, siège</p>
-        <p>+</p>
-        <p>produit désinfectant pro</p>
-        <p>+</p>
-        <p>produit décrassant pro</p>
-        <p><strong>Nettoyage plastique :</strong></p>
-        <p>habitacle, coffre</p>
-        <p>+</p>
-        <p>ravivant plastique pro</p>
-        <p>+</p>
-        <p>finition pro</p>
-        <p>+</p>
-        <p>vitre</p>
-        <p>Durée ≈ 2h30/3h</p>
-        <p>89€</p>
+    <div class="tarifs-banner">
+        <h2>7-9 places & Monospace</h2>
+        <p>Cliquez ici pour découvrir nos formules & tarifs</p>
+    </div>
+    <div class="tarifs-banner">
+        <h2>Remis à neuf pour vente</h2>
+        <p>Cliquez ici pour découvrir nos formules & tarifs</p>
+    </div>
+    <div class="tarifs-banner">
+        <h2>Devis pour tout autres véhicules</h2>
+        <p>Cliquez ici pour découvrir nos formules & tarifs</p>
     </div>
 </section>
-<!-- FIN DE LA SECTION MODIFIÉE -->
-
 
 <section class="satisfaction">
     <h2>Satisfaction Garantie</h2>
@@ -584,11 +605,117 @@
     &copy; 2025 Nettoyage Voiture Pro. Tous droits réservés.
 </footer>
 
+
+<!-- NOUVELLE FENÊTRE MODALE POUR LES TARIFS -->
+<div id="tarifs-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <section class="service-blocks">
+            <div class="service-block classique">
+                <h3 class="formula-title">Formule <br>classique :</h3>
+                <p><strong>Aspiration :</strong></p>
+                <p>habitacle, coffre, tapis</p>
+                <p><strong>Nettoyage plastique :</strong></p>
+                <p>habitacle, coffre</p>
+                <p>+</p>
+                <p>ravivant plastique</p>
+                <p>+</p>
+                <p>vitre</p>
+                <p>Durée ≈ 1h30</p>
+                <p>45€</p>
+            </div>
+            <div class="service-block premium">
+                <h3 class="formula-title">Formule <br>prémium :</h3>
+                <p><strong>Aspiration :</strong></p>
+                <p>habitacle, coffre, tapis</p>
+                <p><strong>Nettoyage plastique :</strong></p>
+                <p>habitacle, coffre</p>
+                <p>+</p>
+                <p>ravivant plastique pro</p>
+                <p><strong>Nettoyage en profondeur :</strong></p>
+                <p>moquette sol + coffre</p>
+                <p>+</p>
+                <p>produit désinfectant pro</p>
+                <p>+</p>
+                <p>produit décrassant</p>
+                <p>+</p>
+                <p>vitre</p>
+                <p>Durée ≈ 2h</p>
+                <p>69€</p>
+            </div>
+            <div class="service-block vip">
+                <h3 class="formula-title">Formule VIP :</h3>
+                <p><strong>Aspiration et shampouinage :</strong></p>
+                <p>habitacle, coffre, moquette, siège</p>
+                <p>+</p>
+                <p>produit désinfectant pro</p>
+                <p>+</p>
+                <p>produit décrassant pro</p>
+                <p><strong>Nettoyage plastique :</strong></p>
+                <p>habitacle, coffre</p>
+                <p>+</p>
+                <p>ravivant plastique pro</p>
+                <p>+</p>
+                <p>finition pro</p>
+                <p>+</p>
+                <p>vitre</p>
+                <p>Durée ≈ 2h30/3h</p>
+                <p>89€</p>
+            </div>
+        </section>
+    </div>
+</div>
+
+
 <script>
     document.addEventListener("DOMContentLoaded", function() {
+        // --- GESTION DE LA FENÊTRE MODALE ---
+        const modal = document.getElementById('tarifs-modal');
+        const openBtns = document.querySelectorAll('.tarifs-banner');
+        const closeBtn = document.querySelector('.close-button');
+
+        // Fonction pour ouvrir la modale
+        function openModal() {
+            if (!modal.classList.contains('active')) {
+                modal.classList.add('active');
+                // Ajoute un état à l'historique du navigateur pour gérer le bouton retour
+                history.pushState({modal: true}, null);
+            }
+        }
+
+        // Fonction pour fermer la modale
+        function closeModal() {
+            modal.classList.remove('active');
+        }
+
+        // Ajoute un écouteur d'événement à chaque bannière
+        openBtns.forEach(btn => {
+            btn.addEventListener('click', openModal);
+        });
+
+        // Ferme la modale en cliquant sur le bouton X, en dehors, ou avec la touche Echap
+        // en déclenchant un retour dans l'historique pour une expérience utilisateur cohérente
+        closeBtn.onclick = () => history.back();
+        window.addEventListener('click', (event) => {
+            if (event.target == modal) {
+                history.back();
+            }
+        });
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && modal.classList.contains('active')) {
+                history.back();
+            }
+        });
+
+        // Gère le bouton retour du navigateur (y compris sur mobile)
+        window.addEventListener('popstate', closeModal);
+
+
+        // --- ANCIEN SCRIPT ---
+        
         // Animation au scroll
         function checkScroll() {
-            const sections = document.querySelectorAll('.image-section, .satisfaction, .service-blocks');
+            const sections = document.querySelectorAll('.image-section, .satisfaction, .tarifs-banner-section');
             const windowHeight = window.innerHeight;
             
             sections.forEach(section => {
@@ -602,15 +729,11 @@
         window.addEventListener('scroll', checkScroll);
         checkScroll();
 
-        // Slider avec animation d'appel à l'action
+        // Slider avec animation
         const handle = document.getElementById('handle');
-        const handleCircle = document.querySelector('.handle-circle');
         const before = document.querySelector('.before');
         const slider = document.querySelector('.slider');
         let isDragging = false;
-        let lastInteractionTime = Date.now();
-        let attentionInterval;
-        let idleTime = 5000; // 5 secondes d'inactivité avant animation
 
         function updateSlider(x) {
             const rect = slider.getBoundingClientRect();
@@ -619,27 +742,20 @@
             
             before.style.clipPath = `inset(0 ${100 - percentage}% 0 0)`;
             handle.style.left = `${percentage}%`;
-            lastInteractionTime = Date.now();
-            resetAttentionAnimation();
         }
 
         function handleMove(e) {
             if (!isDragging) return;
-            
             const clientX = e.type === 'mousemove' ? e.clientX : e.touches[0].clientX;
             updateSlider(clientX);
         }
 
         function startDrag(e) {
             isDragging = true;
-            const clientX = e.type === 'mousedown' ? e.clientX : e.touches[0].clientX;
-            updateSlider(clientX);
-            
             document.addEventListener('mousemove', handleMove);
             document.addEventListener('mouseup', stopDrag);
             document.addEventListener('touchmove', handleMove);
             document.addEventListener('touchend', stopDrag);
-            
             e.preventDefault();
         }
 
@@ -651,78 +767,34 @@
             document.removeEventListener('touchend', stopDrag);
         }
 
-        function resetAttentionAnimation() {
-            handleCircle.style.animation = 'none';
-            clearInterval(attentionInterval);
-            
-            // Redémarre l'animation après le temps d'inactivité
-            attentionInterval = setTimeout(() => {
-                handleCircle.style.animation = 'attentionPulse 1.5s ease-in-out infinite';
-            }, idleTime);
-        }
-
-        // Initialisation
-        updateSlider(window.innerWidth / 2);
-        resetAttentionAnimation();
-        
-        // Events
         handle.addEventListener('mousedown', startDrag);
         handle.addEventListener('touchstart', startDrag);
+        slider.addEventListener('click', (e) => updateSlider(e.clientX));
 
-        // Click to move
-        slider.addEventListener('click', function(e) {
-            const clientX = e.type === 'click' ? e.clientX : e.touches[0].clientX;
-            updateSlider(clientX);
-        });
-
-        // Empêche la sélection de texte pendant le drag
-        handle.addEventListener('selectstart', function(e) {
-            e.preventDefault();
-            return false;
-        });
-
-        // NOUVELLE FONCTIONNALITÉ : Assombrissement localisé du texte au survol
+        // Effet sur le titre CTA
         const ctaHeading = document.getElementById('cta-heading');
         const originalText = ctaHeading.textContent;
-        const radius = 20; // Rayon en pixels autour du curseur pour assombrir les caractères (réduit à 20)
+        const radius = 20;
 
-        // Envelopper chaque mot dans un span avec white-space: nowrap;, puis chaque caractère
         ctaHeading.innerHTML = originalText.split(' ').map(word => {
-            return `<span class="word">${word.split('').map(char => {
-                return `<span class="char">${char === ' ' ? '&nbsp;' : char}</span>`;
-            }).join('')}</span>`;
-        }).join('&nbsp;'); // Utiliser &nbsp; pour conserver les espaces entre les mots
+            return `<span class="word">${word.split('').map(char => `<span class="char">${char === ' ' ? '&nbsp;' : char}</span>`).join('')}</span>`;
+        }).join('&nbsp;');
 
         const charSpans = ctaHeading.querySelectorAll('.char');
-
         ctaHeading.addEventListener('mousemove', (e) => {
             const mouseX = e.clientX;
             const mouseY = e.clientY;
-
             charSpans.forEach(span => {
                 const rect = span.getBoundingClientRect();
-                // Utiliser le centre du caractère pour le calcul de la distance
                 const spanCenterX = rect.left + rect.width / 2;
                 const spanCenterY = rect.top + rect.height / 2;
-
-                const distance = Math.sqrt(
-                    Math.pow(mouseX - spanCenterX, 2) +
-                    Math.pow(mouseY - spanCenterY, 2)
-                );
-
-                if (distance < radius) {
-                    span.classList.add('darken');
-                } else {
-                    span.classList.remove('darken');
-                }
+                const distance = Math.sqrt(Math.pow(mouseX - spanCenterX, 2) + Math.pow(mouseY - spanCenterY, 2));
+                span.classList.toggle('darken', distance < radius);
             });
         });
 
         ctaHeading.addEventListener('mouseleave', () => {
-            // Réinitialiser tous les caractères à leur couleur d'origine lorsque la souris quitte le titre
-            charSpans.forEach(span => {
-                span.classList.remove('darken');
-            });
+            charSpans.forEach(span => span.classList.remove('darken'));
         });
     });
 </script>
