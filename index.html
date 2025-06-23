@@ -38,6 +38,7 @@
         header {
             position: relative;
             height: 30vh;
+            /* Correction: Rétablissement du chemin local de l'image de la bannière */
             background: url('image/bannière.webp') no-repeat center center/cover;
             color: var(--light-color);
             display: flex;
@@ -214,8 +215,7 @@
         .slider {
             position: relative;
             width: 100%;
-            /* MODIFICATION ICI: Ratio d'aspect pour les images portrait (par exemple, 3:4) */
-            padding-bottom: 133.33%; /* (Hauteur / Largeur) * 100% = (4/3) * 100% */
+            padding-bottom: 133.33%; 
         }
 
         .slider img {
@@ -227,6 +227,8 @@
             object-fit: cover;
             user-select: none;
             pointer-events: none;
+            /* Une image de remplacement est affichée si le chemin local est introuvable */
+            onerror="this.onerror=null;this.src='https://placehold.co/850x1133/cccccc/ffffff?text=Image+non+disponible';"
         }
 
         .before {
@@ -290,7 +292,6 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
         
-        /* --- NOUVEAUX STYLES POUR LA BANNIÈRE DE TARIFS --- */
         .tarifs-banner-section {
             padding: 40px 20px;
             background-color: #fff;
@@ -340,23 +341,22 @@
             opacity: 0.9;
         }
 
-        /* --- NOUVEAUX STYLES POUR LA FENÊTRE MODALE --- */
         .modal {
-            display: none; /* Cachée par défaut */
-            position: fixed; /* Reste en place */
-            z-index: 1000; /* Se place au-dessus de tout */
+            display: none;
+            position: fixed;
+            z-index: 1000;
             left: 0;
             top: 0;
             width: 100%;
             height: 100%;
-            overflow: auto; /* Permet le scroll si le contenu est trop grand */
-            background-color: rgba(0, 0, 0, 0.6); /* Fond noir semi-transparent */
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.6);
             align-items: center;
             justify-content: center;
         }
         
         .modal.active {
-            display: flex; /* Affichée quand la classe active est ajoutée */
+            display: flex;
         }
 
         .modal-content {
@@ -366,10 +366,11 @@
             border-radius: 16px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
             width: 90%;
-            max-width: 950px; /* Largeur augmentée */
+            max-width: 1100px; /* Augmentation pour 4 blocs */
             opacity: 0;
             transform: scale(0.95);
             animation: fadeInModal 0.3s ease-out forwards;
+            padding-bottom: 20px;
         }
         
         @keyframes fadeInModal {
@@ -396,11 +397,19 @@
             cursor: pointer;
         }
         
-        /* Styles pour les blocs de service à l'intérieur de la modale */
+        #modal-title {
+            font-size: 2rem;
+            font-weight: 600;
+            margin: 0;
+            padding: 30px 20px 10px 20px;
+            text-align: center;
+            color: var(--secondary-color);
+        }
+
         .service-blocks {
             display: flex;
             justify-content: space-between;
-            padding: 40px 20px 20px; /* Plus de padding en haut pour le bouton fermer */
+            padding: 20px 20px;
             width: 100%;
             box-sizing: border-box;
         }
@@ -410,6 +419,8 @@
             padding: 20px;
             text-align: center;
             border-right: 2px solid #f0f0f0;
+            display: flex;
+            flex-direction: column;
         }
 
         .service-block:last-child {
@@ -431,13 +442,32 @@
         .service-block.premium .formula-title { color: var(--color-premium); }
         .service-block.vip .formula-title { color: var(--color-vip); }
 
-        .service-block p {
-            margin: 10px 0;
+        .service-block div[id$="-details"] {
+            flex-grow: 1;
         }
 
-        .service-block p:has(strong) {
-            text-align: left;
+        .service-block div[id$="-details"] p {
+            margin: 8px 0;
+            font-size: 0.95rem;
+            color: #555;
+            line-height: 1.5;
         }
+
+        .service-block div[id$="-details"] p:has(strong) {
+            text-align: left;
+            margin-top: 15px;
+            font-size: 1rem;
+            color: #333;
+        }
+
+        .service-block p.price {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-top: 25px;
+        }
+        .service-block.classique p.price { color: var(--color-classique); }
+        .service-block.premium p.price { color: var(--color-premium); }
+        .service-block.vip p.price { color: var(--color-vip); }
 
         .satisfaction {
             text-align: center;
@@ -469,6 +499,7 @@
         .satisfaction img {
             width: 180px;
             margin-top: 25px;
+            onerror="this.onerror=null;this.src='https://placehold.co/180x180/dddddd/ffffff?text=Image+100%25+satisfait';"
         }
 
         footer {
@@ -479,20 +510,29 @@
             color: #444;
         }
 
-        @keyframes attentionPulse {
-            0%, 100% { transform: translate(-50%, -50%); }
-            25% { transform: translate(-50%, -50%) rotate(-3deg); }
-            50% { transform: translate(-50%, -50%) rotate(3deg); }
-            75% { transform: translate(-50%, -50%) rotate(-2deg); }
-        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { to { transform: translateY(0); opacity: 1; } }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes slideUp {
-            to { transform: translateY(0); opacity: 1; }
+        @media (max-width: 992px) { /* Breakpoint pour 4 blocs */
+             .modal-content {
+                max-width: 95%;
+             }
+            .service-blocks {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .service-block {
+                flex-basis: 45%;
+                margin: 10px;
+                border-right: none !important;
+                 border-bottom: 2px solid #f0f0f0;
+            }
+             .service-block:nth-child(2n) {
+                 border-right: none;
+             }
+             .service-block:last-child, .service-block:nth-last-child(2) {
+                 border-bottom: none;
+             }
         }
 
         @media (max-width: 768px) {
@@ -504,25 +544,16 @@
             .cta p { font-size: 1rem; }
             .cta .phone { font-size: 1.4rem; padding: 14px 25px; }
             .image-section h2 { font-size: 1.7rem; }
-            
             .tarifs-banner h2 { font-size: 1.8rem; }
             .tarifs-banner p { font-size: 1rem; }
             
-            /* Styles responsives pour la modale */
-            .modal-content {
-                max-height: 90vh;
-                overflow-y: auto;
-            }
-            .service-blocks {
-                flex-direction: column;
-            }
-            .service-block {
-                border-right: none;
-                border-bottom: 2px solid #f0f0f0;
-                padding: 25px 15px;
-            }
+            .modal-content { max-height: 90vh; overflow-y: auto; }
+            #modal-title { font-size: 1.7rem; padding-top: 40px; }
+            .service-blocks { flex-direction: column; flex-wrap: nowrap; }
+            .service-block { border-right: none; border-bottom: 2px solid #f0f0f0; padding: 25px 15px; flex-basis: auto; }
             .service-block:last-child { border-bottom: none; }
-            .service-block p:has(strong) { padding-left: 15%; }
+            .service-block div[id$="-details"] p:has(strong) { padding-left: 15%; }
+            .service-block p.price { font-size: 1.6rem; }
 
             .handle-circle { width: 36px; height: 36px; }
             .handle-arrows { font-size: 16px; }
@@ -534,7 +565,7 @@
             header h1 { font-size: 1.8rem; }
             .cta { padding: 20px; }
             .image-section { padding: 40px 15px; }
-            .service-block p:has(strong) { padding-left: 10%; }
+            .service-block div[id$="-details"] p:has(strong) { padding-left: 10%; }
             .handle-circle { width: 32px; height: 32px; }
             .handle-arrows { font-size: 14px; }
         }
@@ -574,25 +605,25 @@
 
 <!-- SECTION DES BANNIÈRES DE TARIFS -->
 <section class="tarifs-banner-section">
-    <div class="tarifs-banner">
+    <div class="tarifs-banner" data-category="citadine">
         <h2>Citadine & Berline</h2>
         <p>Cliquez ici pour découvrir nos formules & tarifs</p>
     </div>
-    <div class="tarifs-banner">
+    <div class="tarifs-banner" data-category="suv">
         <h2>SUV & Break</h2>
         <p>Cliquez ici pour découvrir nos formules & tarifs</p>
     </div>
-    <div class="tarifs-banner">
+    <div class="tarifs-banner" data-category="monospace">
         <h2>7-9 places & Monospace</h2>
         <p>Cliquez ici pour découvrir nos formules & tarifs</p>
     </div>
-    <div class="tarifs-banner">
-        <h2>Remis à neuf pour vente</h2>
-        <p>Cliquez ici pour découvrir nos formules & tarifs</p>
+    <div class="tarifs-banner" data-category="vente">
+        <h2>Remise à neuf</h2>
+        <p>Valorisez votre véhicule pour la vente</p>
     </div>
-    <div class="tarifs-banner">
+    <div class="tarifs-banner" data-category="devis">
         <h2>Devis pour tout autres véhicules</h2>
-        <p>Cliquez ici pour découvrir nos formules & tarifs</p>
+        <p>Contactez-nous pour une offre personnalisée</p>
     </div>
 </section>
 
@@ -607,179 +638,302 @@
 </footer>
 
 
-<!-- NOUVELLE FENÊTRE MODALE POUR LES TARIFS -->
+<!-- FENÊTRE MODALE DYNAMIQUE POUR LES TARIFS -->
 <div id="tarifs-modal" class="modal">
     <div class="modal-content">
         <span class="close-button">&times;</span>
+        <h2 id="modal-title"></h2>
+        <!-- Conteneur pour les blocs de formules standard -->
         <section class="service-blocks">
-            <div class="service-block classique">
-                <h3 class="formula-title">Formule <br>classique :</h3>
-                <p><strong>Aspiration :</strong></p>
-                <p>habitacle, coffre, tapis</p>
-                <p><strong>Nettoyage plastique :</strong></p>
-                <p>habitacle, coffre</p>
-                <p>+</p>
-                <p>ravivant plastique</p>
-                <p>+</p>
-                <p>vitre</p>
-                <p>Durée ≈ 1h30</p>
-                <p>45€</p>
+            <div class="service-block classique" id="classique-block">
+                <h3 class="formula-title" id="classique-title"></h3>
+                <div id="classique-details"></div>
+                <p class="price" id="classique-price"></p>
             </div>
-            <div class="service-block premium">
-                <h3 class="formula-title">Formule <br>prémium :</h3>
-                <p><strong>Aspiration :</strong></p>
-                <p>habitacle, coffre, tapis</p>
-                <p><strong>Nettoyage plastique :</strong></p>
-                <p>habitacle, coffre</p>
-                <p>+</p>
-                <p>ravivant plastique pro</p>
-                <p><strong>Nettoyage en profondeur :</strong></p>
-                <p>moquette sol + coffre</p>
-                <p>+</p>
-                <p>produit désinfectant pro</p>
-                <p>+</p>
-                <p>produit décrassant</p>
-                <p>+</p>
-                <p>vitre</p>
-                <p>Durée ≈ 2h</p>
-                <p>69€</p>
+            <div class="service-block premium" id="premium-block">
+                <h3 class="formula-title" id="premium-title"></h3>
+                <div id="premium-details"></div>
+                <p class="price" id="premium-price"></p>
             </div>
-            <div class="service-block vip">
-                <h3 class="formula-title">Formule VIP :</h3>
-                <p><strong>Aspiration et shampouinage :</strong></p>
-                <p>habitacle, coffre, moquette, siège</p>
-                <p>+</p>
-                <p>produit désinfectant pro</p>
-                <p>+</p>
-                <p>produit décrassant pro</p>
-                <p><strong>Nettoyage plastique :</strong></p>
-                <p>habitacle, coffre</p>
-                <p>+</p>
-                <p>ravivant plastique pro</p>
-                <p>+</p>
-                <p>finition pro</p>
-                <p>+</p>
-                <p>vitre</p>
-                <p>Durée ≈ 2h30/3h</p>
-                <p>89€</p>
+            <div class="service-block vip" id="vip-block">
+                <h3 class="formula-title" id="vip-title"></h3>
+                <div id="vip-details"></div>
+                <p class="price" id="vip-price"></p>
             </div>
+            <!-- Quatrième bloc, principalement pour la catégorie monospace -->
+            <div class="service-block vip" id="vip2-block" style="display: none;">
+                <h3 class="formula-title" id="vip2-title"></h3>
+                <div id="vip2-details"></div>
+                <p class="price" id="vip2-price"></p>
+            </div>
+        </section>
+        <!-- Conteneur pour le contenu personnalisé (devis, vente, etc.) -->
+        <section id="custom-block" style="display: none; padding: 20px 40px 30px; text-align: center;">
         </section>
     </div>
 </div>
 
 
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // --- GESTION DE LA FENÊTRE MODALE ---
-        const modal = document.getElementById('tarifs-modal');
-        const openBtns = document.querySelectorAll('.tarifs-banner');
-        const closeBtn = document.querySelector('.close-button');
+document.addEventListener("DOMContentLoaded", function() {
 
-        // Fonction pour ouvrir la modale
-        function openModal() {
-            if (!modal.classList.contains('active')) {
-                modal.classList.add('active');
-                // Ajoute un état à l'historique du navigateur pour gérer le bouton retour
-                history.pushState({modal: true}, null);
+    // =================================================================
+    // CONTENU MODIFIABLE POUR LES TARIFS
+    // Modifiez les textes et les prix ici.
+    // =================================================================
+    const tarifsData = {
+        citadine: {
+            title: "Tarifs : Citadine & Berline",
+            formulas: {
+                classique: {
+                    title: "Formule <br>classique",
+                    details: [
+                        "<strong>Aspiration :</strong>", "habitacle, coffre, tapis",
+                        "<strong>Nettoyage plastique :</strong>", "habitacle, coffre",
+                        "+", "ravivant plastique", "+", "vitre", "Durée ≈ 1h30"
+                    ],
+                    price: "45€"
+                },
+                premium: {
+                    title: "Formule <br>prémium",
+                    details: [
+                        "<strong>Aspiration :</strong>", "habitacle, coffre, tapis",
+                        "<strong>Nettoyage plastique :</strong>", "habitacle, coffre", "+", "ravivant plastique pro",
+                        "<strong>Nettoyage en profondeur :</strong>", "moquette sol + coffre",
+                        "+", "produit désinfectant pro", "+", "produit décrassant", "+", "vitre", "Durée ≈ 2h"
+                    ],
+                    price: "69€"
+                },
+                vip: {
+                    title: "Formule VIP",
+                    details: [
+                        "<strong>Aspiration et shampouinage :</strong>", "habitacle, coffre, moquette, siège",
+                        "+", "produit désinfectant pro", "+", "produit décrassant pro",
+                        "<strong>Nettoyage plastique :</strong>", "habitacle, coffre",
+                        "+", "ravivant plastique pro", "+", "finition pro", "+", "vitre", "Durée ≈ 2h30/3h"
+                    ],
+                    price: "89€"
+                }
             }
+        },
+        suv: {
+            title: "Tarifs : SUV & Break",
+            formulas: {
+                classique: { title: "Formule <br>classique", details: ["<strong>Aspiration :</strong>", "habitacle, coffre, tapis", "<strong>Nettoyage plastique :</strong>", "habitacle, coffre", "+", "ravivant plastique", "+", "vitre", "Durée ≈ 2h"], price: "60€" },
+                premium: { title: "Formule <br>prémium", details: ["<strong>Aspiration :</strong>", "habitacle, coffre, tapis", "<strong>Nettoyage plastique :</strong>", "habitacle, coffre", "+", "ravivant plastique pro", "<strong>Nettoyage en profondeur :</strong>", "moquette sol + coffre", "+", "produit désinfectant pro", "+", "produit décrassant", "+", "vitre", "Durée ≈ 2h30"], price: "80€" },
+                vip: { title: "Formule VIP", details: ["<strong>Aspiration et shampouinage :</strong>", "habitacle, coffre, moquette, siège", "+", "produit désinfectant pro", "+", "produit décrassant pro", "<strong>Nettoyage plastique :</strong>", "habitacle, coffre", "+", "ravivant plastique pro", "+", "finition pro", "+", "vitre", "Durée ≈ 3h"], price: "110€" }
+            }
+        },
+        monospace: {
+            title: "Tarifs : 7-9 places & Monospace",
+            formulas: {
+                classique: { title: "Formule <br>classique", details: ["<strong>Aspiration :</strong>", "habitacle, coffre, tapis", "<strong>Nettoyage plastique :</strong>", "habitacle, coffre", "+", "ravivant plastique", "+", "vitre", "Durée ≈ 2h30"], price: "65€" },
+                premium: { title: "Formule <br>prémium", details: ["<strong>Aspiration :</strong>", "habitacle, coffre, tapis", "<strong>Nettoyage plastique :</strong>", "habitacle, coffre", "+", "ravivant plastique pro", "<strong>Nettoyage en profondeur :</strong>", "moquette sol + coffre", "+", "produit désinfectant pro", "+", "produit décrassant", "+", "vitre", "Durée ≈ 3h"], price: "90€" },
+                vip: { title: "Formule VIP<br>pour 7 places", details: ["<strong>Aspiration et shampouinage :</strong>", "habitacle, coffre, moquette, siège", "+", "produit désinfectant pro", "+", "produit décrassant pro", "<strong>Nettoyage plastique :</strong>", "habitacle, coffre", "+", "ravivant plastique pro", "+", "finition pro", "+", "vitre", "Durée ≈ 3h30"], price: "130€" },
+                vip2: { title: "Formule VIP<br>pour 9 places", details: ["<strong>Aspiration et shampouinage :</strong>", "habitacle, coffre, moquette, siège", "+", "produit désinfectant pro", "+", "produit décrassant pro", "<strong>Nettoyage plastique :</strong>", "habitacle, coffre", "+", "ravivant plastique pro", "+", "finition pro", "+", "vitre", "Durée ≈ 3h30"], price: "150€" }
+            }
+        },
+        vente: {
+            title: "Remise à neuf",
+            isCustom: true,
+            content: `
+                <p style="font-size: 1.1rem; max-width: 600px; margin: 0 auto 20px auto;">Pour une revente de véhicule, quoi de mieux que de le remettre à neuf à l'intérieur ?</p>
+                <div style="text-align: center;">
+                    <h3 style="font-weight: 700; color: var(--secondary-color); font-size: 1.5rem; margin-top: 15px;">Formule "Tout neuf" <span style="font-weight: 500; font-size: 1.2rem;">≈ 5h</span></h3>
+                    <p style="font-style: italic; color: #666; margin: 10px auto 20px auto; max-width: 80%; line-height: 1.6;">moquette + siège + plastique + boite à gant + coffre + haut de toit + ravivant plastique + vitre + ceintures</p>
+                    <div style="display: inline-block; text-align: left; font-size: 1.1rem;">
+                        <p><strong>Citadine / Berline :</strong> 190€</p>
+                        <p><strong>SUV / Break :</strong> 220 €</p>
+                        <p><strong>7 places :</strong> 240€</p>
+                        <p><strong>9 places & monospace :</strong> 250 €</p>
+                    </div>
+                </div>
+            `
+        },
+        devis: {
+            title: "Devis pour tout autres véhicules",
+            isCustom: true,
+            content: `
+                <p>Devis sur demande pour d'autres situations particulières à l'adresse mail :</p>
+                <a href="mailto:CleanMathis@gmail.com?subject=Devis" style="font-size: 1.3rem; color: var(--primary-color); font-weight: 600; margin: 10px 0; display: inline-block; text-decoration: none;">CleanMathis@gmail.com</a>
+                <p style="margin-top: 25px;">Veuillez préciser :</p>
+                <ul style="list-style: none; padding: 0; margin-top: 10px; display: inline-block; text-align: left;">
+                    <li>- Ce que vous désirez</li>
+                    <li>- L'état du véhicule (avec photos si possible)</li>
+                    <li>- Le lieu d'intervention</li>
+                </ul>
+                <p style="margin-top: 25px;">Tout véhicule peut être nettoyé intérieurement par Clean Mathis.</p>
+            `
         }
+    };
 
-        // Fonction pour fermer la modale
-        function closeModal() {
-            modal.classList.remove('active');
+    // --- GESTION DE LA FENÊTRE MODALE ---
+    const modal = document.getElementById('tarifs-modal');
+    const openBtns = document.querySelectorAll('.tarifs-banner');
+    const closeBtn = document.querySelector('.close-button');
+
+    const modalTitle = document.getElementById('modal-title');
+    const serviceBlocksContainer = document.querySelector('.service-blocks');
+    const customBlock = document.getElementById('custom-block');
+
+    // Références aux éléments de la modale
+    const elements = {
+        classique: {
+            block: document.getElementById('classique-block'),
+            title: document.getElementById('classique-title'),
+            details: document.getElementById('classique-details'),
+            price: document.getElementById('classique-price')
+        },
+        premium: {
+            block: document.getElementById('premium-block'),
+            title: document.getElementById('premium-title'),
+            details: document.getElementById('premium-details'),
+            price: document.getElementById('premium-price')
+        },
+        vip: {
+            block: document.getElementById('vip-block'),
+            title: document.getElementById('vip-title'),
+            details: document.getElementById('vip-details'),
+            price: document.getElementById('vip-price')
+        },
+        vip2: {
+            block: document.getElementById('vip2-block'),
+            title: document.getElementById('vip2-title'),
+            details: document.getElementById('vip2-details'),
+            price: document.getElementById('vip2-price')
         }
+    };
 
-        // Ajoute un écouteur d'événement à chaque bannière
-        openBtns.forEach(btn => {
-            btn.addEventListener('click', openModal);
-        });
+    function updateModalContent(category) {
+        const data = tarifsData[category];
+        if (!data) return;
 
-        // Ferme la modale en cliquant sur le bouton X, en dehors, ou avec la touche Echap
-        // en déclenchant un retour dans l'historique pour une expérience utilisateur cohérente
-        closeBtn.onclick = () => history.back();
-        window.addEventListener('click', (event) => {
-            if (event.target == modal) {
-                history.back();
-            }
-        });
-        document.addEventListener('keydown', (event) => {
-            if (event.key === 'Escape' && modal.classList.contains('active')) {
-                history.back();
-            }
-        });
+        modalTitle.textContent = data.title;
 
-        // Gère le bouton retour du navigateur (y compris sur mobile)
-        window.addEventListener('popstate', closeModal);
+        if (data.isCustom) {
+            // Gérer les cas 'vente' et 'devis' avec contenu personnalisé
+            serviceBlocksContainer.style.display = 'none';
+            customBlock.style.display = 'block';
+            customBlock.innerHTML = data.content;
+        } else {
+            // Gérer les blocs de formules standard
+            serviceBlocksContainer.style.display = 'flex';
+            customBlock.style.display = 'none';
 
+            const formulaOrder = ['classique', 'premium', 'vip', 'vip2'];
+            let lastVisibleBlock = null;
 
-        
-        // Animation au scroll
-        function checkScroll() {
-            const sections = document.querySelectorAll('.image-section, .satisfaction, .tarifs-banner-section');
-            const windowHeight = window.innerHeight;
-            
-            sections.forEach(section => {
-                const sectionTop = section.getBoundingClientRect().top;
-                if (sectionTop < windowHeight - 100) {
-                    section.classList.add('visible');
+            formulaOrder.forEach(key => {
+                const ui = elements[key];
+                const formulaData = data.formulas[key];
+
+                if (ui && formulaData) {
+                    ui.block.style.display = 'flex'; // Afficher le bloc
+                    ui.title.innerHTML = formulaData.title;
+                    ui.details.innerHTML = formulaData.details.map(p => `<p>${p}</p>`).join('');
+                    ui.price.textContent = formulaData.price;
+                    
+                    // Appliquer la bordure par défaut (sera supprimée pour le dernier élément)
+                    ui.block.style.borderRight = '2px solid #f0f0f0'; 
+                    lastVisibleBlock = ui.block;
+                } else if (ui) {
+                    ui.block.style.display = 'none'; // Cacher le bloc s'il n'y a pas de données
                 }
             });
+
+            // Supprimer la bordure du dernier bloc visible (uniquement en vue non-responsive)
+            if (lastVisibleBlock && window.innerWidth > 992) {
+                lastVisibleBlock.style.borderRight = 'none';
+            }
         }
+    }
 
-        window.addEventListener('scroll', checkScroll);
-        checkScroll();
-
-        // Slider avec animation
-        const handle = document.getElementById('handle');
-        const before = document.querySelector('.before');
-        const slider = document.querySelector('.slider');
-        let isDragging = false;
-
-        function updateSlider(x) {
-            const rect = slider.getBoundingClientRect();
-            let percentage = (x - rect.left) / rect.width * 100;
-            percentage = Math.max(0, Math.min(100, percentage));
-            
-            before.style.clipPath = `inset(0 ${100 - percentage}% 0 0)`;
-            handle.style.left = `${percentage}%`;
+    function openModal() {
+        if (!modal.classList.contains('active')) {
+            modal.classList.add('active');
+            history.pushState({modal: true}, null);
         }
+    }
 
-        function handleMove(e) {
-            if (!isDragging) return;
-            const clientX = e.type === 'mousemove' ? e.clientX : e.touches[0].clientX;
-            updateSlider(clientX);
-        }
+    function closeModal() {
+        modal.classList.remove('active');
+    }
 
-        function startDrag(e) {
-            isDragging = true;
-            document.addEventListener('mousemove', handleMove);
-            document.addEventListener('mouseup', stopDrag);
-            document.addEventListener('touchmove', handleMove);
-            document.addEventListener('touchend', stopDrag);
-            e.preventDefault();
-        }
+    openBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const category = btn.dataset.category;
+            updateModalContent(category);
+            openModal();
+        });
+    });
 
-        function stopDrag() {
-            isDragging = false;
-            document.removeEventListener('mousemove', handleMove);
-            document.removeEventListener('mouseup', stopDrag);
-            document.removeEventListener('touchmove', handleMove);
-            document.removeEventListener('touchend', stopDrag);
-        }
+    closeBtn.onclick = () => history.back();
+    window.addEventListener('click', (event) => {
+        if (event.target == modal) history.back();
+    });
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && modal.classList.contains('active')) history.back();
+    });
+    window.addEventListener('popstate', closeModal);
+    
+    // --- AUTRES SCRIPTS (Slider, Animations, etc.) ---
+    function checkScroll() {
+        const sections = document.querySelectorAll('.image-section, .satisfaction, .tarifs-banner-section');
+        const windowHeight = window.innerHeight;
+        sections.forEach(section => {
+            const sectionTop = section.getBoundingClientRect().top;
+            if (sectionTop < windowHeight - 100) section.classList.add('visible');
+        });
+    }
+    window.addEventListener('scroll', checkScroll);
+    checkScroll();
 
-        handle.addEventListener('mousedown', startDrag);
-        handle.addEventListener('touchstart', startDrag);
-        slider.addEventListener('click', (e) => updateSlider(e.clientX));
+    const handle = document.getElementById('handle');
+    const before = document.querySelector('.before');
+    const slider = document.querySelector('.slider');
+    let isDragging = false;
 
-        // Effet sur le titre CTA
-        const ctaHeading = document.getElementById('cta-heading');
+    function updateSlider(x) {
+        const rect = slider.getBoundingClientRect();
+        let percentage = (x - rect.left) / rect.width * 100;
+        percentage = Math.max(0, Math.min(100, percentage));
+        before.style.clipPath = `inset(0 ${100 - percentage}% 0 0)`;
+        handle.style.left = `${percentage}%`;
+    }
+
+    function handleMove(e) {
+        if (!isDragging) return;
+        const clientX = e.type === 'mousemove' ? e.clientX : e.touches[0].clientX;
+        updateSlider(clientX);
+    }
+    function startDrag(e) {
+        isDragging = true;
+        document.body.style.cursor = 'ew-resize';
+        document.addEventListener('mousemove', handleMove);
+        document.addEventListener('mouseup', stopDrag);
+        document.addEventListener('touchmove', handleMove);
+        document.addEventListener('touchend', stopDrag);
+        e.preventDefault();
+    }
+    function stopDrag() {
+        isDragging = false;
+        document.body.style.cursor = 'default';
+        document.removeEventListener('mousemove', handleMove);
+        document.removeEventListener('mouseup', stopDrag);
+        document.removeEventListener('touchmove', handleMove);
+        document.removeEventListener('touchend', stopDrag);
+    }
+    handle.addEventListener('mousedown', startDrag);
+    handle.addEventListener('touchstart', startDrag);
+    slider.addEventListener('click', (e) => {
+        if (!isDragging) updateSlider(e.clientX);
+    });
+
+    const ctaHeading = document.getElementById('cta-heading');
+    if (ctaHeading) {
         const originalText = ctaHeading.textContent;
         const radius = 20;
-
-        ctaHeading.innerHTML = originalText.split(' ').map(word => {
-            return `<span class="word">${word.split('').map(char => `<span class="char">${char === ' ' ? '&nbsp;' : char}</span>`).join('')}</span>`;
-        }).join('&nbsp;');
-
+        ctaHeading.innerHTML = originalText.split(' ').map(word => `<span class="word">${word.split('').map(char => `<span class="char">${char === ' ' ? '&nbsp;' : char}</span>`).join('')}</span>`).join('&nbsp;');
         const charSpans = ctaHeading.querySelectorAll('.char');
         ctaHeading.addEventListener('mousemove', (e) => {
             const mouseX = e.clientX;
@@ -792,11 +946,9 @@
                 span.classList.toggle('darken', distance < radius);
             });
         });
-
-        ctaHeading.addEventListener('mouseleave', () => {
-            charSpans.forEach(span => span.classList.remove('darken'));
-        });
-    });
+        ctaHeading.addEventListener('mouseleave', () => charSpans.forEach(span => span.classList.remove('darken')));
+    }
+});
 </script>
 </body>
 </html>
