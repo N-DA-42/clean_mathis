@@ -214,7 +214,8 @@
         .slider {
             position: relative;
             width: 100%;
-            padding-bottom: 56.25%; /* Ratio d'aspect 16:9 */
+            /* MODIFICATION ICI: Ratio d'aspect pour les images portrait (par exemple, 3:4) */
+            padding-bottom: 133.33%; /* (Hauteur / Largeur) * 100% = (4/3) * 100% */
         }
 
         .slider img {
@@ -556,7 +557,7 @@
     <h2>Avant / Après</h2>
     <div class="slider-container">
         <div class="slider">
-            <img src="image/1.jpeg" alt="Avant nettoyage" class="before">
+            <img src="image/1.jpg" alt="Avant nettoyage" class="before">
             <img src="image/2.jpg" alt="Après nettoyage">
             <div class="slider-handle" id="handle">
                 <div class="handle-circle">
@@ -597,7 +598,7 @@
 
 <section class="satisfaction">
     <h2>Satisfaction Garantie</h2>
-    <img src="image/satisfait.png" alt="100% satisfait">
+    <img src="image/100% satisfait.png" alt="100% satisfait">
     <p>Des dizaines de clients satisfaits, pourquoi pas vous ?</p>
 </section>
 
@@ -711,7 +712,6 @@
         window.addEventListener('popstate', closeModal);
 
 
-        // --- ANCIEN SCRIPT ---
         
         // Animation au scroll
         function checkScroll() {
