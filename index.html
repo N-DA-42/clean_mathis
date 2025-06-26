@@ -4,9 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clean Mathis – Services de nettoyage professionnels</title>
-<meta name="description" content="Clean Mathis propose des services de nettoyage écologiques pour particuliers et entreprises. Contactez-nous pour un devis gratuit.">
+    <meta name="description" content="Clean Mathis propose des services de nettoyage écologiques pour particuliers et entreprises. Contactez-nous pour un devis gratuit.">
     <link rel="icon" type="image/x-icon" href="image/logo.ico">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Ajout de Font Awesome pour les icônes (étoiles, etc.) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         :root {
             --primary-color: #d62976;
@@ -21,6 +23,8 @@
             --color-classique: #f58529; /* Orange */
             --color-premium: #ee2a7b;   /* Rose */
             --color-vip: #8e3b8e;       /* Violet */
+            --star-color: #ffc107;
+            --grey-color: #e0e0e0;
         }
 
         html {
@@ -39,7 +43,6 @@
         header {
             position: relative;
             height: 30vh;
-            /* Correction: Rétablissement du chemin local de l'image de la bannière */
             background: url('image/bannière.webp') no-repeat center center/cover;
             color: var(--light-color);
             display: flex;
@@ -228,8 +231,6 @@
             object-fit: cover;
             user-select: none;
             pointer-events: none;
-            /* Une image de remplacement est affichée si le chemin local est introuvable */
-            onerror="this.onerror=null;this.src='https://placehold.co/850x1133/cccccc/ffffff?text=Image+non+disponible';"
         }
 
         .before {
@@ -367,7 +368,7 @@
             border-radius: 16px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
             width: 90%;
-            max-width: 1100px; /* Augmentation pour 4 blocs */
+            max-width: 1100px;
             opacity: 0;
             transform: scale(0.95);
             animation: fadeInModal 0.3s ease-out forwards;
@@ -470,38 +471,311 @@
         .service-block.premium p.price { color: var(--color-premium); }
         .service-block.vip p.price { color: var(--color-vip); }
 
-        .satisfaction {
-            text-align: center;
-            background-color: #f5f5f5;
+        /* ========= STYLES POUR LA SECTION AVIS CLIENT ========= */
+        .reviews-section {
+            background-color: #ffffff;
             padding: 60px 20px;
             opacity: 0;
             transform: translateY(30px);
             transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            max-width: 900px;
+            margin: 40px auto;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
         }
 
-        .satisfaction.visible {
+        .reviews-section.visible {
             opacity: 1;
             transform: translateY(0);
         }
 
-        .satisfaction h2 {
+        .reviews-section h2 {
+            text-align: center;
             font-size: 2.2rem;
             color: var(--primary-color);
-            margin-bottom: 20px;
+            margin-bottom: 30px;
             font-weight: 600;
         }
+        
+        .reviews-summary {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
 
-        .satisfaction p {
-            font-size: 1.15rem;
-            margin-top: 15px;
+        .summary-score {
+            text-align: center;
+        }
+        
+        .summary-score .score-value {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--dark-color);
+        }
+
+        .summary-score .stars {
+            color: var(--star-color);
+            font-size: 1.5rem;
+            margin: 5px 0;
+        }
+
+        .summary-score .review-count {
+            font-size: 1rem;
+            color: #666;
+        }
+
+        .summary-bars {
+            flex-grow: 1;
+            max-width: 400px;
+        }
+
+        .rating-bar-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 5px;
+        }
+
+        .rating-bar-label {
+            width: 60px;
+            font-size: 0.9rem;
             color: #555;
         }
-
-        .satisfaction img {
-            width: 180px;
-            margin-top: 25px;
-            onerror="this.onerror=null;this.src='https://placehold.co/180x180/dddddd/ffffff?text=Image+100%25+satisfait';"
+        .rating-bar-label .fa-star {
+            color: var(--star-color);
+            margin-left: 2px;
         }
+
+        .rating-bar {
+            flex-grow: 1;
+            height: 10px;
+            background-color: var(--grey-color);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .rating-bar-fill {
+            height: 100%;
+            background-color: var(--star-color);
+            border-radius: 5px;
+            transition: width 0.5s ease-in-out;
+        }
+
+        .review-actions {
+            text-align: center;
+            margin-bottom: 40px;
+            border-top: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+            padding: 25px 0;
+        }
+
+        .review-actions .btn {
+            background: var(--instagram-gradient);
+            color: var(--light-color);
+            padding: 12px 25px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .review-actions .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+
+        .review-filters {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background-color: #f0f0f0;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        .filter-btn.active, .filter-btn:hover {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        
+        #reviews-container .review-card {
+            background-color: #fff;
+            border: 1px solid #eee;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .review-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .review-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .review-meta {
+            flex-grow: 1;
+        }
+
+        .review-author {
+            font-weight: 600;
+            margin: 0;
+        }
+        
+        .review-rating .fa-star {
+            color: var(--star-color);
+        }
+        .review-rating .fa-star.empty {
+            color: var(--grey-color);
+        }
+
+        .review-date {
+            font-size: 0.85rem;
+            color: #888;
+        }
+        
+        .review-body p {
+            margin: 0;
+            color: #444;
+        }
+
+        .review-photos {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .review-photos img {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            object-fit: cover;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .review-photos img:hover {
+            transform: scale(1.05);
+        }
+        
+        /* Modal pour le formulaire d'avis */
+        #review-form-modal .modal-content {
+            max-width: 550px;
+        }
+
+        #review-form {
+            padding: 20px 30px;
+        }
+        
+        #review-form .form-group {
+            margin-bottom: 20px;
+        }
+        
+        #review-form label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        #review-form input[type="text"], #review-form textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        #review-form textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .star-rating-input {
+            font-size: 2.5rem;
+            color: var(--grey-color);
+        }
+        .star-rating-input .fa-star {
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .star-rating-input .fa-star:hover,
+        .star-rating-input .fa-star.selected {
+            color: var(--star-color);
+        }
+
+        #photo-upload-label {
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: #f0f0f0;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        #photo-upload-label:hover {
+            background-color: #e0e0e0;
+        }
+        #photo-upload {
+            display: none;
+        }
+        #photo-preview {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        #photo-preview img {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        
+        #review-form .submit-btn {
+             display: block;
+             width: 100%;
+             padding: 15px;
+             border: none;
+             border-radius: 8px;
+             background: var(--instagram-gradient);
+             color: white;
+             font-size: 1.1rem;
+             font-weight: 600;
+             cursor: pointer;
+             transition: all 0.3s ease;
+        }
+        #review-form .submit-btn:hover {
+             transform: scale(1.02);
+        }
+        /* ========= FIN DES STYLES ========= */
 
         footer {
             text-align: center;
@@ -514,26 +788,12 @@
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes slideUp { to { transform: translateY(0); opacity: 1; } }
 
-        @media (max-width: 992px) { /* Breakpoint pour 4 blocs */
-             .modal-content {
-                max-width: 95%;
-             }
-            .service-blocks {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-            .service-block {
-                flex-basis: 45%;
-                margin: 10px;
-                border-right: none !important;
-                 border-bottom: 2px solid #f0f0f0;
-            }
-             .service-block:nth-child(2n) {
-                 border-right: none;
-             }
-             .service-block:last-child, .service-block:nth-last-child(2) {
-                 border-bottom: none;
-             }
+        @media (max-width: 992px) {
+             .modal-content { max-width: 95%; }
+            .service-blocks { flex-wrap: wrap; justify-content: center; }
+            .service-block { flex-basis: 45%; margin: 10px; border-right: none !important; border-bottom: 2px solid #f0f0f0; }
+             .service-block:nth-child(2n) { border-right: none; }
+             .service-block:last-child, .service-block:nth-last-child(2) { border-bottom: none; }
         }
 
         @media (max-width: 768px) {
@@ -558,8 +818,9 @@
 
             .handle-circle { width: 36px; height: 36px; }
             .handle-arrows { font-size: 16px; }
-            .satisfaction h2 { font-size: 1.8rem; }
-            .satisfaction img { width: 150px; }
+            
+            .reviews-section h2 { font-size: 1.8rem; }
+            .reviews-summary { flex-direction: column; gap: 20px; }
         }
 
         @media (max-width: 480px) {
@@ -569,6 +830,8 @@
             .service-block div[id$="-details"] p:has(strong) { padding-left: 10%; }
             .handle-circle { width: 32px; height: 32px; }
             .handle-arrows { font-size: 14px; }
+            .review-header { flex-direction: column; align-items: flex-start; }
+            .review-author { margin-bottom: 5px; }
         }
     </style>
 </head>
@@ -589,8 +852,8 @@
     <h2>Avant / Après</h2>
     <div class="slider-container">
         <div class="slider">
-            <img src="image/1.jpg" alt="Avant nettoyage" class="before">
-            <img src="image/2.jpg" alt="Après nettoyage">
+            <img src="image/1.jpg" alt="Avant nettoyage" class="before" onerror="this.onerror=null;this.src='https://placehold.co/850x1133/cccccc/ffffff?text=Image+Avant';">
+            <img src="image/2.jpg" alt="Après nettoyage" onerror="this.onerror=null;this.src='https://placehold.co/850x1133/cccccc/ffffff?text=Image+Apr%C3%A8s';">
             <div class="slider-handle" id="handle">
                 <div class="handle-circle">
                     <div class="handle-arrows">❮ ❯</div>
@@ -628,14 +891,61 @@
     </div>
 </section>
 
-<section class="satisfaction">
-    <h2>Satisfaction Garantie</h2>
-    <img src="image/100% satisfait.png" alt="100% satisfait">
-    <p>Des dizaines de clients satisfaits, pourquoi pas vous ?</p>
+<!-- SECTION AVIS CLIENT -->
+<section class="reviews-section">
+    <h2>Avis client</h2>
+    
+    <!-- Résumé des avis -->
+    <div class="reviews-summary">
+        <div class="summary-score">
+            <div id="average-rating-value" class="score-value">0.0</div>
+            <div id="average-rating-stars" class="stars"></div>
+            <div id="total-reviews-count" class="review-count">0 avis</div>
+        </div>
+        <div class="summary-bars">
+            <div class="rating-bar-container">
+                <div class="rating-bar-label">5 <i class="fa-solid fa-star"></i></div>
+                <div class="rating-bar"><div id="rating-bar-5" class="rating-bar-fill"></div></div>
+            </div>
+            <div class="rating-bar-container">
+                <div class="rating-bar-label">4 <i class="fa-solid fa-star"></i></div>
+                <div class="rating-bar"><div id="rating-bar-4" class="rating-bar-fill"></div></div>
+            </div>
+            <div class="rating-bar-container">
+                <div class="rating-bar-label">3 <i class="fa-solid fa-star"></i></div>
+                <div class="rating-bar"><div id="rating-bar-3" class="rating-bar-fill"></div></div>
+            </div>
+            <div class="rating-bar-container">
+                <div class="rating-bar-label">2 <i class="fa-solid fa-star"></i></div>
+                <div class="rating-bar"><div id="rating-bar-2" class="rating-bar-fill"></div></div>
+            </div>
+            <div class="rating-bar-container">
+                <div class="rating-bar-label">1 <i class="fa-solid fa-star"></i></div>
+                <div class="rating-bar"><div id="rating-bar-1" class="rating-bar-fill"></div></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bouton pour laisser un avis -->
+    <div class="review-actions">
+        <button id="open-review-form-btn" class="btn">Donner son avis</button>
+    </div>
+
+    <!-- Filtres -->
+    <div class="review-filters">
+        <button class="filter-btn active" data-filter="all">Tous</button>
+        <button class="filter-btn" data-filter="positive">Positifs</button>
+        <button class="filter-btn" data-filter="negative">Négatifs</button>
+    </div>
+
+    <!-- Conteneur pour les avis -->
+    <div id="reviews-container">
+        <!-- Les avis sauvegardés seront injectés ici par JavaScript -->
+    </div>
 </section>
 
 <footer>
-    &copy; 2025 Nettoyage Voiture Pro. Tous droits réservés.
+    &copy; 2025 Clean Mathis. Tous droits réservés.
 </footer>
 
 
@@ -644,7 +954,6 @@
     <div class="modal-content">
         <span class="close-button">&times;</span>
         <h2 id="modal-title"></h2>
-        <!-- Conteneur pour les blocs de formules standard -->
         <section class="service-blocks">
             <div class="service-block classique" id="classique-block">
                 <h3 class="formula-title" id="classique-title"></h3>
@@ -661,16 +970,48 @@
                 <div id="vip-details"></div>
                 <p class="price" id="vip-price"></p>
             </div>
-            <!-- Quatrième bloc, principalement pour la catégorie monospace -->
             <div class="service-block vip" id="vip2-block" style="display: none;">
                 <h3 class="formula-title" id="vip2-title"></h3>
                 <div id="vip2-details"></div>
                 <p class="price" id="vip2-price"></p>
             </div>
         </section>
-        <!-- Conteneur pour le contenu personnalisé (devis, vente, etc.) -->
-        <section id="custom-block" style="display: none; padding: 20px 40px 30px; text-align: center;">
-        </section>
+        <section id="custom-block" style="display: none; padding: 20px 40px 30px; text-align: center;"></section>
+    </div>
+</div>
+
+<!-- FENÊTRE MODALE POUR LE FORMULAIRE D'AVIS -->
+<div id="review-form-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <h2 id="review-form-title" style="text-align:center; color: var(--primary-color); padding: 20px;">Votre avis nous intéresse</h2>
+        <form id="review-form">
+            <div class="form-group">
+                <label for="author-name">Votre nom</label>
+                <input type="text" id="author-name" name="author-name" required>
+            </div>
+            <div class="form-group">
+                <label>Votre note</label>
+                <div class="star-rating-input" data-rating="0">
+                    <i class="fa-solid fa-star" data-value="1"></i>
+                    <i class="fa-solid fa-star" data-value="2"></i>
+                    <i class="fa-solid fa-star" data-value="3"></i>
+                    <i class="fa-solid fa-star" data-value="4"></i>
+                    <i class="fa-solid fa-star" data-value="5"></i>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="review-comment">Votre commentaire</label>
+                <textarea id="review-comment" name="review-comment" rows="4" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="photo-upload">Ajouter des photos (optionnel)</label>
+                <input type="file" id="photo-upload" accept="image/*" multiple>
+                <label for="photo-upload" id="photo-upload-label"><i class="fa-solid fa-camera"></i> Choisir des fichiers</label>
+                <div id="photo-preview"></div>
+            </div>
+            <button type="submit" class="submit-btn">Envoyer mon avis</button>
+        </form>
     </div>
 </div>
 
@@ -680,206 +1021,67 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // =================================================================
     // CONTENU MODIFIABLE POUR LES TARIFS
-    // Modifiez les textes et les prix ici.
     // =================================================================
     const tarifsData = {
-        citadine: {
-            title: "Tarifs : Citadine & Berline",
-            formulas: {
-                classique: {
-                    title: "Formule <br>classique",
-                    details: [
-                        "<strong>Aspiration :</strong>", "habitacle, coffre, tapis",
-                        "<strong>Nettoyage plastique :</strong>", "habitacle, coffre",
-                        "+", "ravivant plastique", "+", "vitre", "Durée ≈ 1h30"
-                    ],
-                    price: "45€"
-                },
-                premium: {
-                    title: "Formule <br>prémium",
-                    details: [
-                        "<strong>Aspiration :</strong>", "habitacle, coffre, tapis",
-                        "<strong>Nettoyage plastique :</strong>", "habitacle, coffre", "+", "ravivant plastique pro",
-                        "<strong>Nettoyage en profondeur :</strong>", "moquette sol + coffre",
-                        "+", "produit désinfectant pro", "+", "produit décrassant", "+", "vitre", "Durée ≈ 2h"
-                    ],
-                    price: "69€"
-                },
-                vip: {
-                    title: "Formule VIP",
-                    details: [
-                        "<strong>Aspiration et shampouinage :</strong>", "habitacle, coffre, moquette, siège",
-                        "+", "produit désinfectant pro", "+", "produit décrassant pro",
-                        "<strong>Nettoyage plastique :</strong>", "habitacle, coffre",
-                        "+", "ravivant plastique pro", "+", "finition pro", "+", "vitre", "Durée ≈ 2h30/3h"
-                    ],
-                    price: "89€"
-                }
-            }
-        },
-        suv: {
-            title: "Tarifs : SUV & Break",
-            formulas: {
-                classique: { title: "Formule <br>classique", details: ["<strong>Aspiration :</strong>", "habitacle, coffre, tapis", "<strong>Nettoyage plastique :</strong>", "habitacle, coffre", "+", "ravivant plastique", "+", "vitre", "Durée ≈ 2h"], price: "60€" },
-                premium: { title: "Formule <br>prémium", details: ["<strong>Aspiration :</strong>", "habitacle, coffre, tapis", "<strong>Nettoyage plastique :</strong>", "habitacle, coffre", "+", "ravivant plastique pro", "<strong>Nettoyage en profondeur :</strong>", "moquette sol + coffre", "+", "produit désinfectant pro", "+", "produit décrassant", "+", "vitre", "Durée ≈ 2h30"], price: "80€" },
-                vip: { title: "Formule VIP", details: ["<strong>Aspiration et shampouinage :</strong>", "habitacle, coffre, moquette, siège", "+", "produit désinfectant pro", "+", "produit décrassant pro", "<strong>Nettoyage plastique :</strong>", "habitacle, coffre", "+", "ravivant plastique pro", "+", "finition pro", "+", "vitre", "Durée ≈ 3h"], price: "110€" }
-            }
-        },
-        monospace: {
-            title: "Tarifs : 7-9 places & Monospace",
-            formulas: {
-                classique: { title: "Formule <br>classique", details: ["<strong>Aspiration :</strong>", "habitacle, coffre, tapis", "<strong>Nettoyage plastique :</strong>", "habitacle, coffre", "+", "ravivant plastique", "+", "vitre", "Durée ≈ 2h30"], price: "65€" },
-                premium: { title: "Formule <br>prémium", details: ["<strong>Aspiration :</strong>", "habitacle, coffre, tapis", "<strong>Nettoyage plastique :</strong>", "habitacle, coffre", "+", "ravivant plastique pro", "<strong>Nettoyage en profondeur :</strong>", "moquette sol + coffre", "+", "produit désinfectant pro", "+", "produit décrassant", "+", "vitre", "Durée ≈ 3h"], price: "90€" },
-                vip: { title: "Formule VIP<br>pour 7 places", details: ["<strong>Aspiration et shampouinage :</strong>", "habitacle, coffre, moquette, siège", "+", "produit désinfectant pro", "+", "produit décrassant pro", "<strong>Nettoyage plastique :</strong>", "habitacle, coffre", "+", "ravivant plastique pro", "+", "finition pro", "+", "vitre", "Durée ≈ 3h30"], price: "130€" },
-                vip2: { title: "Formule VIP<br>pour 9 places", details: ["<strong>Aspiration et shampouinage :</strong>", "habitacle, coffre, moquette, siège", "+", "produit désinfectant pro", "+", "produit décrassant pro", "<strong>Nettoyage plastique :</strong>", "habitacle, coffre", "+", "ravivant plastique pro", "+", "finition pro", "+", "vitre", "Durée ≈ 3h30"], price: "150€" }
-            }
-        },
-        vente: {
-            title: "Remise à neuf",
-            isCustom: true,
-            content: `
-                <p style="font-size: 1.1rem; max-width: 600px; margin: 0 auto 20px auto;">Pour une revente de véhicule, quoi de mieux que de le remettre à neuf à l'intérieur ?</p>
-                <div style="text-align: center;">
-                    <h3 style="font-weight: 700; color: var(--secondary-color); font-size: 1.5rem; margin-top: 15px;">Formule "Tout neuf" <span style="font-weight: 500; font-size: 1.2rem;">≈ 5h</span></h3>
-                    <p style="font-style: italic; color: #666; margin: 10px auto 20px auto; max-width: 80%; line-height: 1.6;">moquette + siège + plastique + boite à gant + coffre + haut de toit + ravivant plastique + vitre + ceintures</p>
-                    <div style="display: inline-block; text-align: left; font-size: 1.1rem;">
-                        <p><strong>Citadine / Berline :</strong> 190€</p>
-                        <p><strong>SUV / Break :</strong> 220 €</p>
-                        <p><strong>7 places :</strong> 240€</p>
-                        <p><strong>9 places & monospace :</strong> 250 €</p>
-                    </div>
-                </div>
-            `
-        },
-        devis: {
-            title: "Devis pour tout autres véhicules",
-            isCustom: true,
-            content: `
-                <p>Devis sur demande pour d'autres situations particulières à l'adresse mail :</p>
-                <a href="mailto:CleanMathis@gmail.com?subject=Devis" style="font-size: 1.3rem; color: var(--primary-color); font-weight: 600; margin: 10px 0; display: inline-block; text-decoration: none;">CleanMathis@gmail.com</a>
-                <p style="margin-top: 25px;">Veuillez préciser :</p>
-                <ul style="list-style: none; padding: 0; margin-top: 10px; display: inline-block; text-align: left;">
-                    <li>- Ce que vous désirez</li>
-                    <li>- L'état du véhicule (avec photos si possible)</li>
-                    <li>- Le lieu d'intervention</li>
-                </ul>
-                <p style="margin-top: 25px;">Tout véhicule peut être nettoyé intérieurement par Clean Mathis.</p>
-            `
-        }
+        citadine: { title: "Tarifs : Citadine & Berline", formulas: { classique: { title: "Formule <br>classique", details: ["<strong>Aspiration :</strong>", "habitacle, coffre, tapis", "<strong>Nettoyage plastique :</strong>", "habitacle, coffre", "+", "ravivant plastique", "+", "vitre", "Durée ≈ 1h30"], price: "45€" }, premium: { title: "Formule <br>prémium", details: ["<strong>Aspiration :</strong>", "habitacle, coffre, tapis", "<strong>Nettoyage plastique :</strong>", "habitacle, coffre", "+", "ravivant plastique pro", "<strong>Nettoyage en profondeur :</strong>", "moquette sol + coffre", "+", "produit désinfectant pro", "+", "produit décrassant", "+", "vitre", "Durée ≈ 2h"], price: "69€" }, vip: { title: "Formule VIP", details: ["<strong>Aspiration et shampouinage :</strong>", "habitacle, coffre, moquette, siège", "+", "produit désinfectant pro", "+", "produit décrassant pro", "<strong>Nettoyage plastique :</strong>", "habitacle, coffre", "+", "ravivant plastique pro", "+", "finition pro", "+", "vitre", "Durée ≈ 2h30/3h"], price: "89€" } } },
+        suv: { title: "Tarifs : SUV & Break", formulas: { classique: { title: "Formule <br>classique", details: ["<strong>Aspiration :</strong>", "habitacle, coffre, tapis", "<strong>Nettoyage plastique :</strong>", "habitacle, coffre", "+", "ravivant plastique", "+", "vitre", "Durée ≈ 2h"], price: "60€" }, premium: { title: "Formule <br>prémium", details: ["<strong>Aspiration :</strong>", "habitacle, coffre, tapis", "<strong>Nettoyage plastique :</strong>", "habitacle, coffre", "+", "ravivant plastique pro", "<strong>Nettoyage en profondeur :</strong>", "moquette sol + coffre", "+", "produit désinfectant pro", "+", "produit décrassant", "+", "vitre", "Durée ≈ 2h30"], price: "80€" }, vip: { title: "Formule VIP", details: ["<strong>Aspiration et shampouinage :</strong>", "habitacle, coffre, moquette, siège", "+", "produit désinfectant pro", "+", "produit décrassant pro", "<strong>Nettoyage plastique :</strong>", "habitacle, coffre", "+", "ravivant plastique pro", "+", "finition pro", "+", "vitre", "Durée ≈ 3h"], price: "110€" } } },
+        monospace: { title: "Tarifs : 7-9 places & Monospace", formulas: { classique: { title: "Formule <br>classique", details: ["<strong>Aspiration :</strong>", "habitacle, coffre, tapis", "<strong>Nettoyage plastique :</strong>", "habitacle, coffre", "+", "ravivant plastique", "+", "vitre", "Durée ≈ 2h30"], price: "65€" }, premium: { title: "Formule <br>prémium", details: ["<strong>Aspiration :</strong>", "habitacle, coffre, tapis", "<strong>Nettoyage plastique :</strong>", "habitacle, coffre", "+", "ravivant plastique pro", "<strong>Nettoyage en profondeur :</strong>", "moquette sol + coffre", "+", "produit désinfectant pro", "+", "produit décrassant", "+", "vitre", "Durée ≈ 3h"], price: "90€" }, vip: { title: "Formule VIP<br>pour 7 places", details: ["<strong>Aspiration et shampouinage :</strong>", "habitacle, coffre, moquette, siège", "+", "produit désinfectant pro", "+", "produit décrassant pro", "<strong>Nettoyage plastique :</strong>", "habitacle, coffre", "+", "ravivant plastique pro", "+", "finition pro", "+", "vitre", "Durée ≈ 3h30"], price: "130€" }, vip2: { title: "Formule VIP<br>pour 9 places", details: ["<strong>Aspiration et shampouinage :</strong>", "habitacle, coffre, moquette, siège", "+", "produit désinfectant pro", "+", "produit décrassant pro", "<strong>Nettoyage plastique :</strong>", "habitacle, coffre", "+", "ravivant plastique pro", "+", "finition pro", "+", "vitre", "Durée ≈ 3h30"], price: "150€" } } },
+        vente: { title: "Remise à neuf", isCustom: true, content: `<p style="font-size: 1.1rem; max-width: 600px; margin: 0 auto 20px auto;">Pour une revente de véhicule, quoi de mieux que de le remettre à neuf à l'intérieur ?</p><div style="text-align: center;"><h3 style="font-weight: 700; color: var(--secondary-color); font-size: 1.5rem; margin-top: 15px;">Formule "Tout neuf" <span style="font-weight: 500; font-size: 1.2rem;">≈ 5h</span></h3><p style="font-style: italic; color: #666; margin: 10px auto 20px auto; max-width: 80%; line-height: 1.6;">moquette + siège + plastique + boite à gant + coffre + haut de toit + ravivant plastique + vitre + ceintures</p><div style="display: inline-block; text-align: left; font-size: 1.1rem;"><p><strong>Citadine / Berline :</strong> 190€</p><p><strong>SUV / Break :</strong> 220 €</p><p><strong>7 places :</strong> 240€</p><p><strong>9 places & monospace :</strong> 250 €</p></div></div>` },
+        devis: { title: "Devis pour tout autres véhicules", isCustom: true, content: `<p>Devis sur demande pour d'autres situations particulières à l'adresse mail :</p><a href="mailto:CleanMathis@gmail.com?subject=Devis" style="font-size: 1.3rem; color: var(--primary-color); font-weight: 600; margin: 10px 0; display: inline-block; text-decoration: none;">CleanMathis@gmail.com</a><p style="margin-top: 25px;">Veuillez préciser :</p><ul style="list-style: none; padding: 0; margin-top: 10px; display: inline-block; text-align: left;"><li>- Ce que vous désirez</li><li>- L'état du véhicule (avec photos si possible)</li><li>- Le lieu d'intervention</li></ul><p style="margin-top: 25px;">Tout véhicule peut être nettoyé intérieurement par Clean Mathis.</p>` }
     };
 
-    // --- GESTION DE LA FENÊTRE MODALE ---
-    const modal = document.getElementById('tarifs-modal');
-    const openBtns = document.querySelectorAll('.tarifs-banner');
-    const closeBtn = document.querySelector('.close-button');
-
+    // --- GESTION DE LA FENÊTRE MODALE TARIFS ---
+    const tarifsModal = document.getElementById('tarifs-modal');
+    const openTarifsBtns = document.querySelectorAll('.tarifs-banner');
+    const closeTarifsBtn = tarifsModal.querySelector('.close-button');
     const modalTitle = document.getElementById('modal-title');
     const serviceBlocksContainer = document.querySelector('.service-blocks');
     const customBlock = document.getElementById('custom-block');
-
-    // Références aux éléments de la modale
-    const elements = {
-        classique: {
-            block: document.getElementById('classique-block'),
-            title: document.getElementById('classique-title'),
-            details: document.getElementById('classique-details'),
-            price: document.getElementById('classique-price')
-        },
-        premium: {
-            block: document.getElementById('premium-block'),
-            title: document.getElementById('premium-title'),
-            details: document.getElementById('premium-details'),
-            price: document.getElementById('premium-price')
-        },
-        vip: {
-            block: document.getElementById('vip-block'),
-            title: document.getElementById('vip-title'),
-            details: document.getElementById('vip-details'),
-            price: document.getElementById('vip-price')
-        },
-        vip2: {
-            block: document.getElementById('vip2-block'),
-            title: document.getElementById('vip2-title'),
-            details: document.getElementById('vip2-details'),
-            price: document.getElementById('vip2-price')
-        }
-    };
+    const elements = { classique: { block: document.getElementById('classique-block'), title: document.getElementById('classique-title'), details: document.getElementById('classique-details'), price: document.getElementById('classique-price') }, premium: { block: document.getElementById('premium-block'), title: document.getElementById('premium-title'), details: document.getElementById('premium-details'), price: document.getElementById('premium-price') }, vip: { block: document.getElementById('vip-block'), title: document.getElementById('vip-title'), details: document.getElementById('vip-details'), price: document.getElementById('vip-price') }, vip2: { block: document.getElementById('vip2-block'), title: document.getElementById('vip2-title'), details: document.getElementById('vip2-details'), price: document.getElementById('vip2-price') } };
 
     function updateModalContent(category) {
         const data = tarifsData[category];
         if (!data) return;
-
         modalTitle.textContent = data.title;
-
         if (data.isCustom) {
-            // Gérer les cas 'vente' et 'devis' avec contenu personnalisé
             serviceBlocksContainer.style.display = 'none';
             customBlock.style.display = 'block';
             customBlock.innerHTML = data.content;
         } else {
-            // Gérer les blocs de formules standard
             serviceBlocksContainer.style.display = 'flex';
             customBlock.style.display = 'none';
-
             const formulaOrder = ['classique', 'premium', 'vip', 'vip2'];
             let lastVisibleBlock = null;
-
             formulaOrder.forEach(key => {
                 const ui = elements[key];
                 const formulaData = data.formulas[key];
-
                 if (ui && formulaData) {
-                    ui.block.style.display = 'flex'; // Afficher le bloc
+                    ui.block.style.display = 'flex';
                     ui.title.innerHTML = formulaData.title;
                     ui.details.innerHTML = formulaData.details.map(p => `<p>${p}</p>`).join('');
                     ui.price.textContent = formulaData.price;
-                    
-                    // Appliquer la bordure par défaut (sera supprimée pour le dernier élément)
                     ui.block.style.borderRight = '2px solid #f0f0f0'; 
                     lastVisibleBlock = ui.block;
                 } else if (ui) {
-                    ui.block.style.display = 'none'; // Cacher le bloc s'il n'y a pas de données
+                    ui.block.style.display = 'none';
                 }
             });
-
-            // Supprimer la bordure du dernier bloc visible (uniquement en vue non-responsive)
             if (lastVisibleBlock && window.innerWidth > 992) {
                 lastVisibleBlock.style.borderRight = 'none';
             }
         }
     }
 
-    function openModal() {
-        if (!modal.classList.contains('active')) {
-            modal.classList.add('active');
-            history.pushState({modal: true}, null);
-        }
-    }
+    function openTarifsModal() { if (!tarifsModal.classList.contains('active')) { tarifsModal.classList.add('active'); } }
+    function closeTarifsModal() { tarifsModal.classList.remove('active'); }
 
-    function closeModal() {
-        modal.classList.remove('active');
-    }
+    openTarifsBtns.forEach(btn => { btn.addEventListener('click', () => { const category = btn.dataset.category; updateModalContent(category); openTarifsModal(); }); });
+    closeTarifsBtn.onclick = closeTarifsModal;
 
-    openBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const category = btn.dataset.category;
-            updateModalContent(category);
-            openModal();
-        });
-    });
 
-    closeBtn.onclick = () => history.back();
-    window.addEventListener('click', (event) => {
-        if (event.target == modal) history.back();
-    });
-    document.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape' && modal.classList.contains('active')) history.back();
-    });
-    window.addEventListener('popstate', closeModal);
-    
     // --- AUTRES SCRIPTS (Slider, Animations, etc.) ---
     function checkScroll() {
-        const sections = document.querySelectorAll('.image-section, .satisfaction, .tarifs-banner-section');
+        const sections = document.querySelectorAll('.image-section, .reviews-section, .tarifs-banner-section');
         const windowHeight = window.innerHeight;
         sections.forEach(section => {
             const sectionTop = section.getBoundingClientRect().top;
@@ -893,62 +1095,224 @@ document.addEventListener("DOMContentLoaded", function() {
     const before = document.querySelector('.before');
     const slider = document.querySelector('.slider');
     let isDragging = false;
-
-    function updateSlider(x) {
-        const rect = slider.getBoundingClientRect();
-        let percentage = (x - rect.left) / rect.width * 100;
-        percentage = Math.max(0, Math.min(100, percentage));
-        before.style.clipPath = `inset(0 ${100 - percentage}% 0 0)`;
-        handle.style.left = `${percentage}%`;
-    }
-
-    function handleMove(e) {
-        if (!isDragging) return;
-        const clientX = e.type === 'mousemove' ? e.clientX : e.touches[0].clientX;
-        updateSlider(clientX);
-    }
-    function startDrag(e) {
-        isDragging = true;
-        document.body.style.cursor = 'ew-resize';
-        document.addEventListener('mousemove', handleMove);
-        document.addEventListener('mouseup', stopDrag);
-        document.addEventListener('touchmove', handleMove);
-        document.addEventListener('touchend', stopDrag);
-        e.preventDefault();
-    }
-    function stopDrag() {
-        isDragging = false;
-        document.body.style.cursor = 'default';
-        document.removeEventListener('mousemove', handleMove);
-        document.removeEventListener('mouseup', stopDrag);
-        document.removeEventListener('touchmove', handleMove);
-        document.removeEventListener('touchend', stopDrag);
-    }
+    function updateSlider(x) { const rect = slider.getBoundingClientRect(); let percentage = (x - rect.left) / rect.width * 100; percentage = Math.max(0, Math.min(100, percentage)); before.style.clipPath = `inset(0 ${100 - percentage}% 0 0)`; handle.style.left = `${percentage}%`; }
+    function handleMove(e) { if (!isDragging) return; const clientX = e.type === 'mousemove' ? e.clientX : e.touches[0].clientX; updateSlider(clientX); }
+    function startDrag(e) { isDragging = true; document.body.style.cursor = 'ew-resize'; document.addEventListener('mousemove', handleMove); document.addEventListener('mouseup', stopDrag); document.addEventListener('touchmove', handleMove); document.addEventListener('touchend', stopDrag); e.preventDefault(); }
+    function stopDrag() { isDragging = false; document.body.style.cursor = 'default'; document.removeEventListener('mousemove', handleMove); document.removeEventListener('mouseup', stopDrag); document.removeEventListener('touchmove', handleMove); document.removeEventListener('touchend', stopDrag); }
     handle.addEventListener('mousedown', startDrag);
     handle.addEventListener('touchstart', startDrag);
-    slider.addEventListener('click', (e) => {
-        if (!isDragging) updateSlider(e.clientX);
-    });
-
+    slider.addEventListener('click', (e) => { if (!isDragging) updateSlider(e.clientX); });
     const ctaHeading = document.getElementById('cta-heading');
-    if (ctaHeading) {
-        const originalText = ctaHeading.textContent;
-        const radius = 20;
-        ctaHeading.innerHTML = originalText.split(' ').map(word => `<span class="word">${word.split('').map(char => `<span class="char">${char === ' ' ? '&nbsp;' : char}</span>`).join('')}</span>`).join('&nbsp;');
-        const charSpans = ctaHeading.querySelectorAll('.char');
-        ctaHeading.addEventListener('mousemove', (e) => {
-            const mouseX = e.clientX;
-            const mouseY = e.clientY;
-            charSpans.forEach(span => {
-                const rect = span.getBoundingClientRect();
-                const spanCenterX = rect.left + rect.width / 2;
-                const spanCenterY = rect.top + rect.height / 2;
-                const distance = Math.sqrt(Math.pow(mouseX - spanCenterX, 2) + Math.pow(mouseY - spanCenterY, 2));
-                span.classList.toggle('darken', distance < radius);
+    if (ctaHeading) { const originalText = ctaHeading.textContent; const radius = 20; ctaHeading.innerHTML = originalText.split(' ').map(word => `<span class="word">${word.split('').map(char => `<span class="char">${char === ' ' ? '&nbsp;' : char}</span>`).join('')}</span>`).join('&nbsp;'); const charSpans = ctaHeading.querySelectorAll('.char'); ctaHeading.addEventListener('mousemove', (e) => { const mouseX = e.clientX; const mouseY = e.clientY; charSpans.forEach(span => { const rect = span.getBoundingClientRect(); const spanCenterX = rect.left + rect.width / 2; const spanCenterY = rect.top + rect.height / 2; const distance = Math.sqrt(Math.pow(mouseX - spanCenterX, 2) + Math.pow(mouseY - spanCenterY, 2)); span.classList.toggle('darken', distance < radius); }); }); ctaHeading.addEventListener('mouseleave', () => charSpans.forEach(span => span.classList.remove('darken'))); }
+
+    // =================================================================
+    // SCRIPT POUR LA GESTION DES AVIS CLIENT AVEC LOCALSTORAGE
+    // =================================================================
+    
+    // Notre "base de données" sera le localStorage du navigateur.
+    let reviews = [];
+
+    const reviewsContainer = document.getElementById('reviews-container');
+    const reviewFormModal = document.getElementById('review-form-modal');
+    const openReviewFormBtn = document.getElementById('open-review-form-btn');
+    const closeReviewFormBtn = reviewFormModal.querySelector('.close-button');
+    const reviewForm = document.getElementById('review-form');
+    const starRatingInput = document.querySelector('.star-rating-input');
+    const stars = starRatingInput.querySelectorAll('.fa-star');
+    const photoUploadInput = document.getElementById('photo-upload');
+    const photoPreviewContainer = document.getElementById('photo-preview');
+    let uploadedPhotos = [];
+
+    // --- Fonctions de sauvegarde et de chargement ---
+    function saveReviewsToLocalStorage() {
+        localStorage.setItem('cleanMathisReviews', JSON.stringify(reviews));
+    }
+
+    function loadReviewsFromLocalStorage() {
+        const savedReviews = localStorage.getItem('cleanMathisReviews');
+        if (savedReviews) {
+            reviews = JSON.parse(savedReviews);
+        } else {
+            reviews = []; // Initialise un tableau vide si rien n'est sauvegardé
+        }
+    }
+
+    // --- Fonctions de rendu ---
+    function renderStars(rating) {
+        let starHTML = '';
+        for (let i = 1; i <= 5; i++) {
+            starHTML += `<i class="fa-solid fa-star ${i <= rating ? '' : 'empty'}"></i>`;
+        }
+        return starHTML;
+    }
+
+    function renderReviews(filter = 'all') {
+        reviewsContainer.innerHTML = '';
+        
+        const filteredReviews = reviews.filter(review => {
+            if (filter === 'all') return true;
+            if (filter === 'positive') return review.rating >= 4;
+            if (filter === 'negative') return review.rating <= 2;
+        }).sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        if (filteredReviews.length === 0) {
+            reviewsContainer.innerHTML = '<p style="text-align:center; color:#888;">Aucun avis pour le moment. Soyez le premier à en laisser un !</p>';
+        } else {
+            filteredReviews.forEach(review => {
+                const reviewCard = document.createElement('div');
+                reviewCard.className = 'review-card';
+                
+                const photosHTML = review.photos.map(photoSrc => `<img src="${photoSrc}" alt="Photo de l'avis">`).join('');
+    
+                reviewCard.innerHTML = `
+                    <div class="review-header">
+                        <div class="review-avatar">${review.author.charAt(0)}</div>
+                        <div class="review-meta">
+                            <p class="review-author">${review.author}</p>
+                            <div class="review-rating" title="${review.rating} sur 5">
+                                ${renderStars(review.rating)}
+                                <span class="review-date">${new Date(review.date).toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-body">
+                        <p>${review.comment}</p>
+                    </div>
+                    ${review.photos && review.photos.length > 0 ? `<div class="review-photos">${photosHTML}</div>` : ''}
+                `;
+                reviewsContainer.appendChild(reviewCard);
+            });
+        }
+        updateSummary();
+    }
+    
+    function updateSummary() {
+        const totalReviews = reviews.length;
+        const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
+        const averageRating = totalReviews > 0 ? (totalRating / totalReviews) : 0;
+        
+        document.getElementById('average-rating-value').textContent = averageRating.toFixed(1);
+        document.getElementById('average-rating-stars').innerHTML = renderStars(Math.round(averageRating));
+        document.getElementById('total-reviews-count').textContent = `${totalReviews} avis`;
+
+        // Mettre à jour les barres de progression
+        for(let i = 1; i <= 5; i++) {
+            const count = reviews.filter(r => r.rating === i).length;
+            const percentage = totalReviews > 0 ? (count / totalReviews) * 100 : 0;
+            const bar = document.getElementById(`rating-bar-${i}`);
+            bar.style.width = `${percentage}%`;
+            bar.parentElement.parentElement.title = `${count} avis avec ${i} étoile${i > 1 ? 's' : ''}`;
+        }
+    }
+
+
+    // --- Gestion du formulaire d'avis ---
+    function openReviewModal() { if (!reviewFormModal.classList.contains('active')) { reviewFormModal.classList.add('active'); } }
+    function closeReviewModal() { 
+        reviewFormModal.classList.remove('active');
+        reviewForm.reset();
+        starRatingInput.dataset.rating = 0;
+        stars.forEach(s => s.classList.remove('selected'));
+        photoPreviewContainer.innerHTML = '';
+        uploadedPhotos = [];
+    }
+
+    openReviewFormBtn.addEventListener('click', openReviewModal);
+    closeReviewFormBtn.addEventListener('click', closeReviewModal);
+
+    // Système d'étoiles interactif
+    stars.forEach(star => {
+        star.addEventListener('mouseover', () => {
+            const ratingValue = star.dataset.value;
+            stars.forEach(s => {
+                s.classList.toggle('selected', s.dataset.value <= ratingValue);
             });
         });
-        ctaHeading.addEventListener('mouseleave', () => charSpans.forEach(span => span.classList.remove('darken')));
-    }
+        star.addEventListener('mouseout', () => {
+            const currentRating = starRatingInput.dataset.rating;
+            stars.forEach(s => {
+                s.classList.toggle('selected', s.dataset.value <= currentRating);
+            });
+        });
+        star.addEventListener('click', () => {
+            const ratingValue = star.dataset.value;
+            starRatingInput.dataset.rating = ratingValue;
+        });
+    });
+
+    // Prévisualisation des photos
+    photoUploadInput.addEventListener('change', () => {
+        photoPreviewContainer.innerHTML = '';
+        uploadedPhotos = [];
+        const files = Array.from(photoUploadInput.files);
+
+        files.forEach(file => {
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    photoPreviewContainer.appendChild(img);
+                    // On stocke l'image en base64 pour le localStorage
+                    uploadedPhotos.push(e.target.result); 
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+    });
+
+    // Soumission du formulaire
+    reviewForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const newReview = {
+            author: document.getElementById('author-name').value.trim(),
+            rating: parseInt(starRatingInput.dataset.rating, 10),
+            comment: document.getElementById('review-comment').value.trim(),
+            date: new Date().toISOString().split('T')[0], // Date du jour
+            photos: uploadedPhotos
+        };
+
+        if (newReview.rating === 0) {
+            alert("Veuillez sélectionner une note en cliquant sur les étoiles.");
+            return;
+        }
+        if (!newReview.author || !newReview.comment) {
+            alert("Veuillez remplir votre nom et votre commentaire.");
+            return;
+        }
+
+        reviews.push(newReview);
+        saveReviewsToLocalStorage(); // Sauvegarde dans le localStorage
+        renderReviews();
+        closeReviewModal();
+    });
+
+    // --- Gestion des filtres ---
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            filterBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderReviews(btn.dataset.filter);
+        });
+    });
+
+    // --- Gestion globale des modales ---
+    window.addEventListener('click', (event) => {
+        if (event.target == tarifsModal) closeTarifsModal();
+        if (event.target == reviewFormModal) closeReviewModal();
+    });
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            if (tarifsModal.classList.contains('active')) closeTarifsModal();
+            if (reviewFormModal.classList.contains('active')) closeReviewModal();
+        }
+    });
+
+    // Initialisation au chargement de la page
+    loadReviewsFromLocalStorage(); // Charge les avis sauvegardés
+    renderReviews(); // Affiche les avis
+
 });
 </script>
 </body>
