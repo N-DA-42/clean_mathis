@@ -227,8 +227,8 @@
         .slider {
             position: relative;
             width: 100%;
-            padding-bottom: 200%; /* Augmenté pour un ratio plus vertical */
-            background-color: #f0f0f0; /* Ajout d'un fond subtil */
+            padding-bottom: 133.33%; /* Ratio original restauré */
+            background-color: #f0f0f0; 
         }
 
         .slider img {
@@ -237,8 +237,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            /* 'cover' remplit l'espace en rognant si nécessaire, sans déformer */
-            object-fit: cover; 
+            object-fit: cover; /* 'cover' pour remplir sans déformer */
             user-select: none;
             pointer-events: none;
         }
@@ -862,8 +861,8 @@
     <h2>Avant / Après</h2>
     <div class="slider-container">
         <div class="slider">
-            <img src="image/1.png" alt="Avant nettoyage" class="before" onerror="this.onerror=null;this.src='https://placehold.co/850x1133/cccccc/ffffff?text=Image+Avant';">
-            <img src="image/2.png" alt="Après nettoyage" onerror="this.onerror=null;this.src='https://placehold.co/850x1133/cccccc/ffffff?text=Image+Apr%C3%A8s';">
+            <img src="1.png" alt="Avant nettoyage" class="before" onerror="this.onerror=null;this.src='https://placehold.co/850x1133/cccccc/ffffff?text=Image+Avant';">
+            <img src="2.png" alt="Après nettoyage" onerror="this.onerror=null;this.src='https://placehold.co/850x1133/cccccc/ffffff?text=Image+Apr%C3%A8s';">
             <div class="slider-handle" id="handle">
                 <div class="handle-circle">
                     <div class="handle-arrows">❮ ❯</div>
