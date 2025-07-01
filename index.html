@@ -227,7 +227,7 @@
         .slider {
             position: relative;
             width: 100%;
-            padding-bottom: 133.33%; 
+            padding-bottom: 200%; /* Augmenté pour un ratio plus vertical */
             background-color: #f0f0f0; /* Ajout d'un fond subtil */
         }
 
@@ -237,8 +237,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            /* Changé de 'cover' à 'contain' pour éviter le recadrage et la distorsion */
-            object-fit: contain; 
+            /* 'cover' remplit l'espace en rognant si nécessaire, sans déformer */
+            object-fit: cover; 
             user-select: none;
             pointer-events: none;
         }
