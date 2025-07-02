@@ -226,20 +226,21 @@
 
         .slider {
             position: relative;
-            width: 100%;
-            padding-bottom: 133.33%; /* Ratio original restauré */
-            background-color: #f0f0f0; 
+            width: 67%;
+            padding-bottom: 100%; 
+            background-color: #ff0000; 
+            margin: 0 auto;
         }
 
         .slider img {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* 'cover' pour remplir sans déformer */
             user-select: none;
             pointer-events: none;
+            /*
+            Les propriétés top, left, width, height, object-fit et object-position
+            sont maintenant gérées par JavaScript via les attributs data-* dans le HTML.
+            Cela permet un contrôle indépendant pour chaque image.
+            */
         }
 
         .before {
@@ -292,6 +293,7 @@
             padding: 0 20px;
             box-sizing: border-box;
             z-index: 4;
+            pointer-events: none;
         }
 
         .label {
@@ -859,10 +861,40 @@
 
 <section class="image-section">
     <h2>Avant / Après</h2>
+    <!--
+        INSTRUCTIONS POUR PERSONNALISER LES IMAGES DU SLIDER :
+        Vous pouvez maintenant contrôler chaque image (avant et après) indépendamment.
+        Modifiez simplement les attributs `data-*` sur chaque balise <img> ci-dessous.
+
+        - data-top: Position verticale (ex: "0%", "-20px", "5vh").
+        - data-left: Position horizontale (ex: "0%", "30px").
+        - data-width: Largeur de l'image (ex: "100%", "120%", "auto").
+        - data-height: Hauteur de l'image (ex: "100%", "80%", "auto").
+        - data-object-fit: Comportement de l'image. Valeurs communes :
+            - "cover": (Défaut) Remplit le cadre en rognant si nécessaire (conserve les proportions).
+            - "contain": Affiche l'image entière sans la rogner (peut laisser des espaces vides).
+            - "fill": Étire l'image pour remplir le cadre (peut déformer l'image).
+            - "none": Affiche l'image à sa taille réelle.
+        - data-object-position: Aligne l'image quand "cover" ou "contain" est utilisé (ex: "center top", "50% 25%").
+    -->
     <div class="slider-container">
         <div class="slider">
-            <img src='image/1.png' alt="Avant nettoyage" class="before" onerror="this.onerror=null;this.src='https://placehold.co/850x1133/cccccc/ffffff?text=Image+Avant';">
-            <img src='image/2.png' alt="Après nettoyage" onerror="this.onerror=null;this.src='https://placehold.co/850x1133/cccccc/ffffff?text=Image+Apr%C3%A8s';">
+            <img src='image/1.png' alt="Avant nettoyage" class="before"
+                 data-top="-60%"
+                 data-left="0%"
+                 data-width="100%"
+                 data-height="250%"
+                 data-object-fit="cover"
+                 data-object-position="center center"
+                 onerror="this.onerror=null;this.src='https://placehold.co/850x723/cccccc/ffffff?text=Image+Avant';">
+            <img src='image/2.png' alt="Après nettoyage"
+                 data-top="-60%"
+                 data-left="0%"
+                 data-width="100%"
+                 data-height="250%"
+                 data-object-fit="cover"
+                 data-object-position="center center"
+                 onerror="this.onerror=null;this.src='https://placehold.co/850x723/cccccc/ffffff?text=Image+Apr%C3%A8s';">
             <div class="slider-handle" id="handle">
                 <div class="handle-circle">
                     <div class="handle-arrows">❮ ❯</div>
@@ -1042,7 +1074,6 @@ document.addEventListener("DOMContentLoaded", function() {
         monospace: { title: "Tarifs : 7-9 places & Monospace", formulas: { classique: { title: "Formule <br>classique", details: ["<strong>Aspiration :</strong>", "habitacle, coffre, tapis", "<strong>Nettoyage plastique :</strong>", "habitacle, coffre", "+", "ravivant plastique", "+", "vitre", "Durée ≈ 2h30"], price: "65€" }, premium: { title: "Formule <br>prémium", details: ["<strong>Aspiration :</strong>", "habitacle, coffre, tapis", "<strong>Nettoyage plastique :</strong>", "habitacle, coffre", "+", "ravivant plastique pro", "<strong>Nettoyage en profondeur :</strong>", "moquette sol + coffre", "+", "produit désinfectant pro", "+", "produit décrassant", "+", "vitre", "Durée ≈ 3h"], price: "90€" }, vip: { title: "Formule VIP<br>pour 7 places", details: ["<strong>Aspiration et shampouinage :</strong>", "habitacle, coffre, moquette, siège", "+", "produit désinfectant pro", "+", "produit décrassant pro", "<strong>Nettoyage plastique :</strong>", "habitacle, coffre", "+", "ravivant plastique pro", "+", "finition pro", "+", "vitre", "Durée ≈ 3h30"], price: "130€" }, vip2: { title: "Formule VIP<br>pour 9 places", details: ["<strong>Aspiration et shampouinage :</strong>", "habitacle, coffre, moquette, siège", "+", "produit désinfectant pro", "+", "produit décrassant pro", "<strong>Nettoyage plastique :</strong>", "habitacle, coffre", "+", "ravivant plastique pro", "+", "finition pro", "+", "vitre", "Durée ≈ 3h30"], price: "150€" } } },
         vente: { title: "Remise à neuf", isCustom: true, content: `<p style="font-size: 1.1rem; max-width: 600px; margin: 0 auto 20px auto;">Pour une revente de véhicule, quoi de mieux que de le remettre à neuf à l'intérieur ?</p><div style="text-align: center;"><h3 style="font-weight: 700; color: var(--secondary-color); font-size: 1.5rem; margin-top: 15px;">Formule "Tout neuf" <span style="font-weight: 500; font-size: 1.2rem;">≈ 5h</span></h3><p style="font-style: italic; color: #666; margin: 10px auto 20px auto; max-width: 80%; line-height: 1.6;">moquette + siège + plastique + boite à gant + coffre + haut de toit + ravivant plastique + vitre + ceintures</p><div style="display: inline-block; text-align: left; font-size: 1.1rem;"><p><strong>Citadine / Berline :</strong> 190€</p><p><strong>SUV / Break :</strong> 220 €</p><p><strong>7 places :</strong> 240€</p><p><strong>9 places & monospace :</strong> 250 €</p></div></div>` },
         devis: { title: "Devis pour tout autres véhicules", isCustom: true, content: `<p>Devis sur demande pour d'autres situations particulières à l'adresse mail :</p><a href="mailto:CleanMathis@gmail.com?subject=Devis" style="font-size: 1.3rem; color: var(--primary-color); font-weight: 600; margin: 10px 0; display: inline-block; text-decoration: none;">CleanMathis@gmail.com</a><p style="margin-top: 25px;">Veuillez préciser :</p><ul style="list-style: none; padding: 0; margin-top: 10px; display: inline-block; text-align: left;"><li>- Ce que vous désirez</li><li>- L'état du véhicule (avec photos si possible)</li><li>- Le lieu d'intervention</li></ul><p style="margin-top: 25px;">Tout véhicule peut être nettoyé intérieurement par Clean Mathis.</p>` },
-        // NOUVELLE ENTRÉE AJOUTÉE ICI
         'devis-siege': { title: "Devis pour siège/moquette", isCustom: true, content: `<p>Devis sur demande pour le nettoyage de sièges ou de moquettes à l'adresse mail :</p><a href="mailto:CleanMathis@gmail.com?subject=Devis%20siège/moquette" style="font-size: 1.3rem; color: var(--primary-color); font-weight: 600; margin: 10px 0; display: inline-block; text-decoration: none;">CleanMathis@gmail.com</a><p style="margin-top: 25px;">Veuillez préciser :</p><ul style="list-style: none; padding: 0; margin-top: 10px; display: inline-block; text-align: left;"><li>- La prestation désirée (sièges, moquette, ou les deux)</li><li>- L'état des surfaces (avec photos si possible)</li><li>- Le type de véhicule</li><li>- Le lieu d'intervention</li></ul><p style="margin-top: 25px;">Nous trouverons la solution adaptée à vos besoins.</p>` }
     };
 
@@ -1095,7 +1126,23 @@ document.addEventListener("DOMContentLoaded", function() {
     closeTarifsBtn.onclick = closeTarifsModal;
 
 
-    // --- AUTRES SCRIPTS (Slider, Animations, etc.) ---
+    // --- GESTION PERSONNALISÉE DES IMAGES DU SLIDER ---
+    function applySliderImageStyles() {
+        const sliderImages = document.querySelectorAll('.slider img[data-top]');
+        sliderImages.forEach(img => {
+            // Applique les styles depuis les attributs data-*
+            // Utilise des valeurs par défaut si un attribut n'est pas défini
+            img.style.top = img.dataset.top || '0';
+            img.style.left = img.dataset.left || '0';
+            img.style.width = img.dataset.width || '100%';
+            img.style.height = img.dataset.height || '100%';
+            img.style.objectFit = img.dataset.objectFit || 'cover';
+            img.style.objectPosition = img.dataset.objectPosition || 'center center';
+        });
+    }
+    applySliderImageStyles(); // Applique les styles au chargement
+
+    // --- AUTRES SCRIPTS (Animations, etc.) ---
     function checkScroll() {
         const sections = document.querySelectorAll('.image-section, .reviews-section, .tarifs-banner-section');
         const windowHeight = window.innerHeight;
@@ -1125,9 +1172,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // SCRIPT POUR LA GESTION DES AVIS CLIENT AVEC LOCALSTORAGE
     // =================================================================
     
-    // Notre "base de données" sera le localStorage du navigateur.
     let reviews = [];
-
     const reviewsContainer = document.getElementById('reviews-container');
     const reviewFormModal = document.getElementById('review-form-modal');
     const openReviewFormBtn = document.getElementById('open-review-form-btn');
@@ -1139,7 +1184,6 @@ document.addEventListener("DOMContentLoaded", function() {
     const photoPreviewContainer = document.getElementById('photo-preview');
     let uploadedPhotos = [];
 
-    // --- Fonctions de sauvegarde et de chargement ---
     function saveReviewsToLocalStorage() {
         localStorage.setItem('cleanMathisReviews', JSON.stringify(reviews));
     }
@@ -1149,11 +1193,10 @@ document.addEventListener("DOMContentLoaded", function() {
         if (savedReviews) {
             reviews = JSON.parse(savedReviews);
         } else {
-            reviews = []; // Initialise un tableau vide si rien n'est sauvegardé
+            reviews = [];
         }
     }
 
-    // --- Fonctions de rendu ---
     function renderStars(rating) {
         let starHTML = '';
         for (let i = 1; i <= 5; i++) {
@@ -1211,7 +1254,6 @@ document.addEventListener("DOMContentLoaded", function() {
         document.getElementById('average-rating-stars').innerHTML = renderStars(Math.round(averageRating));
         document.getElementById('total-reviews-count').textContent = `${totalReviews} avis`;
 
-        // Mettre à jour les barres de progression
         for(let i = 1; i <= 5; i++) {
             const count = reviews.filter(r => r.rating === i).length;
             const percentage = totalReviews > 0 ? (count / totalReviews) * 100 : 0;
@@ -1221,8 +1263,6 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
-
-    // --- Gestion du formulaire d'avis ---
     function openReviewModal() { if (!reviewFormModal.classList.contains('active')) { reviewFormModal.classList.add('active'); } }
     function closeReviewModal() { 
         reviewFormModal.classList.remove('active');
@@ -1236,7 +1276,6 @@ document.addEventListener("DOMContentLoaded", function() {
     openReviewFormBtn.addEventListener('click', openReviewModal);
     closeReviewFormBtn.addEventListener('click', closeReviewModal);
 
-    // Système d'étoiles interactif
     stars.forEach(star => {
         star.addEventListener('mouseover', () => {
             const ratingValue = star.dataset.value;
@@ -1256,7 +1295,6 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
-    // Prévisualisation des photos
     photoUploadInput.addEventListener('change', () => {
         photoPreviewContainer.innerHTML = '';
         uploadedPhotos = [];
@@ -1269,7 +1307,6 @@ document.addEventListener("DOMContentLoaded", function() {
                     const img = document.createElement('img');
                     img.src = e.target.result;
                     photoPreviewContainer.appendChild(img);
-                    // On stocke l'image en base64 pour le localStorage
                     uploadedPhotos.push(e.target.result); 
                 }
                 reader.readAsDataURL(file);
@@ -1277,14 +1314,13 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
-    // Soumission du formulaire
     reviewForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const newReview = {
             author: document.getElementById('author-name').value.trim(),
             rating: parseInt(starRatingInput.dataset.rating, 10),
             comment: document.getElementById('review-comment').value.trim(),
-            date: new Date().toISOString().split('T')[0], // Date du jour
+            date: new Date().toISOString(),
             photos: uploadedPhotos
         };
 
@@ -1298,12 +1334,11 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
         reviews.push(newReview);
-        saveReviewsToLocalStorage(); // Sauvegarde dans le localStorage
+        saveReviewsToLocalStorage();
         renderReviews();
         closeReviewModal();
     });
 
-    // --- Gestion des filtres ---
     const filterBtns = document.querySelectorAll('.filter-btn');
     filterBtns.forEach(btn => {
         btn.addEventListener('click', () => {
@@ -1313,7 +1348,6 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
-    // --- Gestion globale des modales ---
     window.addEventListener('click', (event) => {
         if (event.target == tarifsModal) closeTarifsModal();
         if (event.target == reviewFormModal) closeReviewModal();
@@ -1325,9 +1359,8 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    // Initialisation au chargement de la page
-    loadReviewsFromLocalStorage(); // Charge les avis sauvegardés
-    renderReviews(); // Affiche les avis
+    loadReviewsFromLocalStorage();
+    renderReviews();
 
 });
 </script>
