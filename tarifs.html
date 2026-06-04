@@ -1,349 +1,496 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clean Mathis - Tarifs & Devis</title>
+    <title>Clean Mathis - Accueil</title>
+    <meta name="description" content="Clean Mathis : Un parcours du detailing, des détails que vous ne voyez pas et un retour au neuf garanti. Nettoyage intérieur, extérieur, polissage et céramique.">
+    <meta name="keywords" content="car wash, lavage auto, auto detailling, detailling, car detailling, nettoyage auto, nettoyage de voiture de luxe, nettoyage intérieur, lavage a domicile, lavage voiture">
     
-    <link rel="icon" type="image/png" href="favicon.png">
-    <link rel="apple-touch-icon" href="favicon.png">
-
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: '#00151c',
+                        darker: '#000c11',
+                        primary: '#ff6b35',
+                        primaryHover: '#ff5500',
+                        glass: 'rgba(255, 255, 255, 0.03)',
+                        glassBorder: 'rgba(255, 255, 255, 0.08)'
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Styles for premium feel */
+        body {
+            background-color: theme('colors.dark');
+            color: white;
+            background-image: radial-gradient(circle at top right, #053b4d 0%, #00151c 40%);
+            background-attachment: fixed;
+        }
+
+        .glass-panel {
+            background: theme('colors.glass');
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid theme('colors.glassBorder');
+        }
+
+        .text-gradient {
+            background: linear-gradient(to right, #ffffff, #b0bec5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .primary-gradient {
+            background: linear-gradient(135deg, theme('colors.primary'), #ff8c00);
+        }
+
+        /* Simulator Styles */
+        .option-card {
+            transition: all 0.3s ease;
+        }
+        .option-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .option-card.selected {
+            border-color: theme('colors.primary');
+            background: rgba(255, 107, 53, 0.1);
+            box-shadow: 0 0 20px rgba(255, 107, 53, 0.15);
+        }
+        .option-card.selected::before {
+            content: '\f058';
+            font-family: 'FontAwesome';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: theme('colors.primary');
+            font-size: 1.2rem;
+        }
+
+        /* Switch toggle for simulator */
+        .level-btn {
+            transition: all 0.3s ease;
+        }
+        .level-btn.active {
+            background-color: theme('colors.primary');
+            color: white;
+            border-color: theme('colors.primary');
+        }
+
+        /* Total Bar Animation */
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+        .total-bar-anim {
+            animation: slideUp 0.5s ease-out forwards;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: theme('colors.darker'); }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: theme('colors.primary'); }
+    </style>
 </head>
-<body>
-    <nav>
-        <a href="index.html?intro=false" class="logo">CLEAN <span>MATHIS</span></a>
-        
-        <div class="burger-menu" onclick="toggleMenu()">
-            <i class="fas fa-bars"></i>
+<body class="antialiased font-sans flex flex-col min-h-screen">
+
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 glass-panel border-b-0 border-white/5 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex-shrink-0">
+                    <a href="#" class="text-2xl font-bold tracking-wider text-white">
+                        CLEAN <span class="text-primary">MATHIS</span>
+                    </a>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#accueil" class="text-white hover:text-primary transition-colors px-3 py-2 rounded-md text-sm font-medium uppercase tracking-wider">Accueil</a>
+                        <a href="#valeurs" class="text-gray-300 hover:text-primary transition-colors px-3 py-2 rounded-md text-sm font-medium uppercase tracking-wider">Nos Valeurs</a>
+                        <a href="#simulateur" class="text-gray-300 hover:text-primary transition-colors px-3 py-2 rounded-md text-sm font-medium uppercase tracking-wider">Tarifs & Devis</a>
+                        <a href="#contact" class="primary-gradient text-white px-5 py-2 rounded-full text-sm font-bold uppercase tracking-wider shadow-lg hover:shadow-primary/50 transition-shadow">Contact</a>
+                    </div>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="-mr-2 flex md:hidden">
+                    <button type="button" onclick="toggleMobileMenu()" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-white/10 focus:outline-none">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
         </div>
 
-        <div class="nav-links">
-            <a href="index.html?intro=false">Accueil</a>
-            <a href="prestations.html">Prestations</a>
-            <a href="tarifs.html">Tarifs</a>
-            <a href="photos.html">Photos</a>
-            <a href="#" onclick="openModal(event)">Contact</a>
+        <!-- Mobile Menu -->
+        <div class="md:hidden hidden bg-darker/95 backdrop-blur-xl absolute w-full border-b border-white/10" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 text-center">
+                <a href="#accueil" onclick="toggleMobileMenu()" class="text-white block px-3 py-4 rounded-md text-base font-medium uppercase">Accueil</a>
+                <a href="#valeurs" onclick="toggleMobileMenu()" class="text-gray-300 block px-3 py-4 rounded-md text-base font-medium uppercase">Nos Valeurs</a>
+                <a href="#simulateur" onclick="toggleMobileMenu()" class="text-gray-300 block px-3 py-4 rounded-md text-base font-medium uppercase">Tarifs</a>
+                <a href="#contact" onclick="toggleMobileMenu()" class="text-primary font-bold block px-3 py-4 rounded-md text-base uppercase">Contact</a>
+            </div>
         </div>
     </nav>
 
-    <main style="padding-top: 120px; padding-bottom: 150px;">
+    <!-- Hero Section -->
+    <section id="accueil" class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden min-h-[90vh] flex items-center">
+        <!-- Background decorative elements -->
+        <div class="absolute top-1/4 left-10 w-72 h-72 bg-primary/20 rounded-full blur-[100px] pointer-events-none"></div>
+        <div class="absolute bottom-1/4 right-10 w-96 h-96 bg-blue-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+            <p class="text-primary font-semibold tracking-widest uppercase mb-4 text-sm md:text-base animate-pulse">Prestige & Nettoyage</p>
+            <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight mb-6">
+                Ici, nous prenons soin <br class="hidden md:block" /> de votre <span class="text-primary">véhicule</span>
+            </h1>
+            <p class="mt-4 max-w-2xl text-xl text-gray-300 mx-auto font-light leading-relaxed">
+                Un parcours du detailing, des détails que vous ne voyez pas et un retour au neuf garanti. Vous êtes au bon endroit.
+            </p>
+            <div class="mt-10 flex justify-center gap-4 flex-col sm:flex-row">
+                <a href="#simulateur" class="primary-gradient text-white px-8 py-4 rounded-full font-bold text-lg shadow-[0_0_20px_rgba(255,107,53,0.4)] hover:scale-105 transition-transform duration-300">
+                    Estimer mon tarif
+                </a>
+                <a href="#contact" class="glass-panel text-white border border-white/20 px-8 py-4 rounded-full font-bold text-lg hover:bg-white/10 transition-colors duration-300">
+                    Nous contacter
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Valeurs / Concept Section -->
+    <section id="valeurs" class="py-20 bg-darker relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-bold mb-4">Notre <span class="text-primary">Philosophie</span></h2>
+                <div class="h-1 w-20 bg-primary mx-auto rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                <!-- Card 1 -->
+                <div class="glass-panel p-8 rounded-3xl text-center hover:-translate-y-2 transition-transform duration-300">
+                    <div class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-6 text-primary text-3xl">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">Confiance Totale</h3>
+                    <p class="text-gray-400 leading-relaxed">
+                        Un accompagnement et des explications claires pour une confiance totale. Chaque véhicule a le droit à une prise en charge chirurgicale adaptée à son utilisation.
+                    </p>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="glass-panel p-8 rounded-3xl text-center hover:-translate-y-2 transition-transform duration-300 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-4 opacity-5 text-8xl">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <div class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-6 text-primary text-3xl relative z-10">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4 relative z-10">Réactivité</h3>
+                    <p class="text-gray-400 leading-relaxed relative z-10">
+                        Une grande réactivité pour vous donner rendez-vous le plus rapidement possible et vous restituer votre véhicule dans les meilleurs délais.
+                    </p>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="glass-panel p-8 rounded-3xl text-center hover:-translate-y-2 transition-transform duration-300">
+                    <div class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-6 text-primary text-3xl">
+                        <i class="fas fa-spray-can-sparkles"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">Qualité Pro</h3>
+                    <p class="text-gray-400 leading-relaxed">
+                        Des traitements effectués avec une panoplie de gammes professionnelles pour garantir un éclat permanent et une protection durable.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Simulateur de Tarifs Section -->
+    <section id="simulateur" class="py-24 relative pb-40">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-5xl font-bold mb-4">Simulateur de <span class="text-primary">Tarifs</span></h2>
+                <p class="text-gray-400 text-lg">Configurez votre prestation sur mesure et obtenez une estimation immédiate.</p>
+            </div>
+
+            <div class="glass-panel rounded-[2rem] p-6 md:p-10 shadow-2xl relative overflow-hidden">
+                <!-- Warning Ribbon -->
+                <div class="bg-yellow-500/20 text-yellow-300 text-sm py-2 px-4 rounded-lg mb-8 flex items-center justify-center gap-3 border border-yellow-500/30">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Les prix du polissage varient en fonction de la catégorie du véhicule.
+                </div>
+
+                <!-- Step 1: Vehicle -->
+                <div class="mb-12">
+                    <h3 class="text-xl font-bold mb-6 flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center text-sm">1</span> 
+                        Votre Véhicule
+                    </h3>
+                    
+                    <div class="relative max-w-md mx-auto mb-8">
+                        <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" id="car-input" placeholder="Rechercher un modèle (ex: Clio, 3008...)" 
+                               class="w-full bg-darker border border-white/10 rounded-full py-3 pl-12 pr-4 text-white focus:outline-none focus:border-primary transition-colors"
+                               onkeyup="searchCar()">
+                        <div id="car-feedback" class="absolute -bottom-6 left-0 w-full text-center text-sm min-h-[20px]"></div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="option-card glass-panel border border-white/10 rounded-xl p-6 text-center cursor-pointer relative" onclick="selectVehicle('citadine', this)" id="default-vehicle">
+                            <i class="fas fa-car-side text-3xl mb-3 text-gray-400"></i>
+                            <h4 class="font-bold">Citadine</h4>
+                            <p class="text-xs text-gray-500 mt-1">Ex: Clio, 208, Fiat 500</p>
+                        </div>
+                        <div class="option-card glass-panel border border-white/10 rounded-xl p-6 text-center cursor-pointer relative" onclick="selectVehicle('berline', this)" id="btn-berline">
+                            <i class="fas fa-car text-3xl mb-3 text-gray-400"></i>
+                            <h4 class="font-bold">Berline / Compacte</h4>
+                            <p class="text-xs text-gray-500 mt-1">Ex: Golf, Série 3, 308</p>
+                        </div>
+                        <div class="option-card glass-panel border border-white/10 rounded-xl p-6 text-center cursor-pointer relative" onclick="selectVehicle('suv', this)" id="btn-suv">
+                            <i class="fas fa-truck-pickup text-3xl mb-3 text-gray-400"></i>
+                            <h4 class="font-bold">SUV / 4x4 / Break</h4>
+                            <p class="text-xs text-gray-500 mt-1">Ex: 3008, X5, Tiguan</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Cleaning -->
+                <div class="mb-12">
+                    <h3 class="text-xl font-bold mb-6 flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center text-sm">2</span> 
+                        Nettoyage
+                    </h3>
+                    
+                    <div class="flex flex-wrap justify-center gap-3 mb-8">
+                        <button class="level-btn active border border-white/20 px-6 py-2 rounded-full text-sm font-semibold" onclick="setLevel('basic', this)">BASIC</button>
+                        <button class="level-btn border border-white/20 px-6 py-2 rounded-full text-sm font-semibold" onclick="setLevel('avancer', this)">AVANCÉ</button>
+                        <button class="level-btn border border-white/20 px-6 py-2 rounded-full text-sm font-semibold" onclick="setLevel('pro', this)">PROFESSIONNEL</button>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="option-card glass-panel border border-white/10 rounded-xl p-6 cursor-pointer relative flex flex-col h-full" onclick="toggleOption('interieur', this)">
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-full bg-dark flex items-center justify-center text-primary"><i class="fas fa-couch"></i></div>
+                                    <h4 class="font-bold text-lg">Intérieur</h4>
+                                </div>
+                                <span class="text-2xl font-bold text-primary" id="price-int">45€</span>
+                            </div>
+                            <ul class="text-sm text-gray-400 space-y-2 flex-grow" id="features-int">
+                                <li><i class="fas fa-check text-primary mr-2 text-xs"></i> Aspiration & Moquette</li>
+                                <li><i class="fas fa-check text-primary mr-2 text-xs"></i> Tableaux de bord</li>
+                            </ul>
+                        </div>
+
+                        <div class="option-card glass-panel border border-white/10 rounded-xl p-6 cursor-pointer relative flex flex-col h-full" onclick="toggleOption('exterieur', this)">
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-full bg-dark flex items-center justify-center text-primary"><i class="fas fa-shower"></i></div>
+                                    <h4 class="font-bold text-lg">Extérieur</h4>
+                                </div>
+                                <span class="text-2xl font-bold text-primary" id="price-ext">35€</span>
+                            </div>
+                            <ul class="text-sm text-gray-400 space-y-2 flex-grow" id="features-ext">
+                                <li><i class="fas fa-check text-primary mr-2 text-xs"></i> Lavage à la main</li>
+                                <li><i class="fas fa-check text-primary mr-2 text-xs"></i> Nettoyage vitres</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div id="pack-msg" class="text-center mt-4 text-sm font-medium text-green-400 opacity-50 transition-opacity">
+                        Sélectionnez Intérieur + Extérieur pour appliquer le tarif Formule (Pack) !
+                    </div>
+                </div>
+
+                <!-- Step 3: Polishing & Ceramic -->
+                <div class="mb-12">
+                    <h3 class="text-xl font-bold mb-6 flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center text-sm">3</span> 
+                        Polissage & Céramique
+                    </h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div class="option-card glass-panel border border-white/10 rounded-xl p-6 cursor-pointer relative polish-card" onclick="togglePolissage('leger', this)">
+                            <h4 class="font-bold text-lg mb-2"><i class="fas fa-magic text-primary mr-2"></i> Polissage Léger</h4>
+                            <p class="text-xs text-gray-400 mb-4 h-12">1 étape ("Enhancement"). Idéal pour raviver la brillance et supprimer les micro-rayures très superficielles.</p>
+                            <span class="text-2xl font-bold text-primary block text-right" id="price-polish-leger">250€</span>
+                        </div>
+                        <div class="option-card glass-panel border border-white/10 rounded-xl p-6 cursor-pointer relative polish-card" onclick="togglePolissage('intermediaire', this)">
+                            <h4 class="font-bold text-lg mb-2"><i class="fas fa-gem text-primary mr-2"></i> Polissage Intermédiaire</h4>
+                            <p class="text-xs text-gray-400 mb-4 h-12">2 étapes. Supprime environ 80-90% des défauts (micro-rayures visibles, tourbillons).</p>
+                            <span class="text-2xl font-bold text-primary block text-right" id="price-polish-inter">350€</span>
+                        </div>
+                    </div>
+
+                    <div id="ceramic-section" class="bg-darker/50 rounded-xl p-6 border border-white/5 opacity-50 pointer-events-none transition-all duration-300">
+                        <h4 class="font-bold mb-4 flex items-center gap-2"><i class="fas fa-shield-alt text-blue-400"></i> Protection Céramique (Nécessite Polissage)</h4>
+                        <p class="text-xs text-gray-400 mb-4">Protection contre les micro-rayures et garantit un éclat permanent.</p>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="option-card glass-panel border border-white/10 rounded-xl p-4 text-center cursor-pointer relative ceramic-card" onclick="toggleCeramic(3, this)">
+                                <h5 class="font-bold">3 Ans</h5>
+                                <span class="text-primary font-bold block mt-2">+120€</span>
+                            </div>
+                            <div class="option-card glass-panel border border-white/10 rounded-xl p-4 text-center cursor-pointer relative ceramic-card" onclick="toggleCeramic(5, this)">
+                                <h5 class="font-bold">5 Ans</h5>
+                                <span class="text-primary font-bold block mt-2">+180€</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4: Options -->
+                <div>
+                    <h3 class="text-xl font-bold mb-6 flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center text-sm">4</span> 
+                        Traitements Déperlants
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="option-card glass-panel border border-white/10 rounded-xl p-4 flex justify-between items-center cursor-pointer relative" onclick="toggleOption('opt_dep_carr', this)">
+                            <div>
+                                <h4 class="font-bold">Déperlant Carrosserie</h4>
+                                <p class="text-xs text-gray-500">Durée min. 3 mois</p>
+                            </div>
+                            <span class="text-xl font-bold text-primary">10€</span>
+                        </div>
+                        <div class="option-card glass-panel border border-white/10 rounded-xl p-4 flex justify-between items-center cursor-pointer relative" onclick="toggleOption('opt_dep_vitre', this)">
+                            <div>
+                                <h4 class="font-bold">Déperlant Vitres</h4>
+                                <p class="text-xs text-gray-500">Durée 6 mois</p>
+                            </div>
+                            <span class="text-xl font-bold text-primary">15€</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         
-        <div class="centered-content">
-            <h2 class="section-title">Simulateur de Tarif</h2>
-            <p>Configurez votre prestation sur mesure et obtenez une estimation immédiate.</p>
+        <!-- Formule Ultra Premium highlight -->
+        <div class="max-w-4xl mx-auto px-4 mt-16">
+            <div class="primary-gradient p-1 rounded-2xl shadow-[0_0_30px_rgba(255,107,53,0.3)]">
+                <div class="bg-darker rounded-[15px] p-8 md:p-10 text-center relative overflow-hidden">
+                    <div class="absolute -right-10 -top-10 text-primary opacity-10 text-9xl"><i class="fas fa-crown"></i></div>
+                    <h3 class="text-2xl md:text-3xl font-bold mb-4 text-white">Formule <span class="text-primary">Ultra Premium</span></h3>
+                    <p class="text-gray-300 text-lg mb-6">Le soin ultime pour votre véhicule : Lavage intérieur & extérieur + Polissage + Déperlant vitres et carrosserie.</p>
+                    <div class="inline-block bg-white/10 border border-white/20 rounded-full px-6 py-3 font-bold text-xl text-primary backdrop-blur-sm">
+                        De 300€ à 700€ *
+                    </div>
+                    <p class="text-xs text-gray-500 mt-4">* Sur devis exact selon l'état et la taille du véhicule.</p>
+                </div>
+            </div>
         </div>
+    </section>
 
-        <div class="calculator-container">
-            
-            <div class="calc-section">
-                <h3><span class="step-number">1</span> Votre Véhicule</h3>
-                
-                <div class="vehicle-search-wrapper">
-                    <input type="text" id="car-input" placeholder="Entrez votre modèle (ex: Clio, Golf, 3008...)" onkeyup="searchCar()">
-                    <i class="fas fa-search search-icon"></i>
-                    <div id="car-feedback"></div>
-                </div>
-
-                <div class="options-grid vehicle-options">
-                    <div class="option-card" onclick="selectVehicle('citadine', this)" id="default-vehicle">
-                        <i class="fas fa-car-side"></i>
-                        <h4>Citadine</h4>
-                        <p class="tiny-desc">Ex: Clio, 208, Fiat 500</p>
-                    </div>
-                    <div class="option-card" onclick="selectVehicle('berline', this)" id="btn-berline">
-                        <i class="fas fa-car"></i>
-                        <h4>Berline / Compacte</h4>
-                        <p class="tiny-desc">Ex: Golf, Série 3, 308</p>
-                    </div>
-                    <div class="option-card" onclick="selectVehicle('suv', this)" id="btn-suv">
-                        <i class="fas fa-truck-pickup"></i>
-                        <h4>SUV / 4x4 / Break</h4>
-                        <p class="tiny-desc">Ex: 3008, X5, Tiguan</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="calc-section">
-                <h3><span class="step-number">2</span> Nettoyage (Intérieur / Extérieur)</h3>
-                <div class="cleaning-selector">
-                    <div class="level-tabs">
-                        <button class="level-btn active" onclick="setLevel('basic', this)">BASIC</button>
-                        <button class="level-btn" onclick="setLevel('avancer', this)">AVANCÉ</button>
-                        <button class="level-btn" onclick="setLevel('pro', this)">PROFESSIONNEL</button>
-                    </div>
-
-                    <div class="options-grid">
-                        <div class="option-card selection-card" onclick="toggleOption('interieur', this)">
-                            <i class="fas fa-couch"></i>
-                            <h4>Intérieur</h4>
-                            <p class="price-tag" id="price-int">45€</p>
-                            <ul class="features-list" id="features-int">
-                                <li>Aspiration & Moquette</li>
-                                <li>Tableau de bord</li>
-                            </ul>
-                        </div>
-                        <div class="option-card selection-card" onclick="toggleOption('exterieur', this)">
-                            <i class="fas fa-shower"></i>
-                            <h4>Extérieur</h4>
-                            <p class="price-tag" id="price-ext">35€</p>
-                            <ul class="features-list" id="features-ext">
-                                <li>Lavage main</li>
-                                <li>Nettoyage vitres</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="pack-alert" id="pack-msg">Sélectionnez les deux pour activer la Formule Pack !</div>
-                </div>
-            </div>
-
-            <div class="calc-section">
-                <h3><span class="step-number">3</span> Esthétique & Rénovation</h3>
-                <div class="options-grid">
-                    <div class="option-card selection-card" onclick="togglePolissage('leger', this)">
-                        <i class="fas fa-magic"></i>
-                        <h4>Polissage Léger</h4>
-                        <p class="price-tag" id="price-polish-leger">250€</p>
-                        <p class="tiny-desc">Ravive la brillance (1 étape)</p>
-                    </div>
-                    <div class="option-card selection-card" onclick="togglePolissage('intermediaire', this)">
-                        <i class="fas fa-gem"></i>
-                        <h4>Polissage Intermédiaire</h4>
-                        <p class="price-tag" id="price-polish-inter">350€</p>
-                        <p class="tiny-desc">Supprime 80% défauts (2 étapes)</p>
-                    </div>
-                </div>
-
-                <div class="ceramic-wrapper" id="ceramic-section" style="opacity: 0.5; pointer-events: none; margin-top: 20px;">
-                    <h4><i class="fas fa-shield-alt"></i> Protection Céramique (Sur Polissage)</h4>
-                    <div class="options-grid">
-                        <div class="option-card selection-card" onclick="toggleCeramic(3, this)">
-                            <h4>3 Ans</h4>
-                            <p class="price-tag">+120€</p>
-                        </div>
-                        <div class="option-card selection-card" onclick="toggleCeramic(5, this)">
-                            <h4>5 Ans</h4>
-                            <p class="price-tag">+180€</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="calc-section">
-                <h3><span class="step-number">4</span> Options</h3>
-                <div class="options-grid small-grid">
-                    <div class="option-card selection-card" onclick="toggleOption('opt_dep_carr', this)">
-                        <h4>Déperlant Carrosserie</h4>
-                        <p class="price-tag">10€</p>
-                    </div>
-                    <div class="option-card selection-card" onclick="toggleOption('opt_dep_vitre', this)">
-                        <h4>Déperlant Vitres</h4>
-                        <p class="price-tag">15€</p>
-                    </div>
-                </div>
-            </div>
-
+    <!-- Floating Total Bar -->
+    <div class="fixed bottom-0 left-0 w-full glass-panel border-t border-primary/30 py-4 px-6 md:px-12 flex flex-col md:flex-row justify-between items-center z-40 total-bar-anim shadow-[0_-10px_40px_rgba(0,0,0,0.5)]">
+        <div class="flex items-center gap-4 mb-3 md:mb-0">
+            <span class="text-gray-300 font-medium uppercase tracking-wider text-sm">Estimation:</span>
+            <span class="text-3xl font-black text-primary" id="total-display">0€</span>
         </div>
-
-        <div class="total-bar">
-            <div class="total-content">
-                <span>Estimation :</span>
-                <span class="total-price" id="total-display">0€</span>
-            </div>
-            <a href="#" onclick="openModal(event)" class="btn-warm small">Réserver ce tarif</a>
-        </div>
-
-    </main>
-
-    <div id="contact-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeModal()">&times;</span>
-            <div class="modal-icon"><i class="fas fa-envelope-open-text"></i></div>
-            <h2>Contactez-nous</h2>
-            <p>Mentionnez votre estimation lors de l'appel !</p>
-            <div class="modal-info"><i class="fas fa-phone-alt"></i> 06 51 64 90 49</div>
-            <div class="modal-info"><i class="fas fa-envelope"></i> cleanmathis@gmail.com</div>
-            <a href="tel:0651649049" class="btn-warm" style="margin-top: 20px;">Appeler Maintenant</a>
-        </div>
+        <button onclick="openModal()" class="w-full md:w-auto primary-gradient text-white px-8 py-3 rounded-full font-bold shadow-lg hover:shadow-primary/50 transition-all hover:-translate-y-1">
+            Réserver ce tarif
+        </button>
     </div>
 
-    <script>
-        const carDB = {
-            citadine: ['clio', 'twingo', 'zoe', 'modus', 'wind', 'r5', 'sandero', 'spring', '208', '207', '206', '108', '107', '106', '205', 'ion', 'c3', 'c2', 'c1', 'ds3', 'ami', 'saxo', 'c-zero', 'polo', 'up', 'lupo', 'fox', 'fabia', 'citigo', 'ibiza', 'mii', 'a1', 'a2', '500', 'fiat 500', 'panda', 'punto', 'tipo', 'mito', 'ypsilon', 'fiesta', 'ka', 'corsa', 'adam', 'karl', 'agila', 'yaris', 'aygo', 'iq', 'micra', 'swift', 'ignis', 'alto', 'celerio', 'splash', 'picanto', 'rio', 'i10', 'i20', 'jazz', 'colt', 'space star', 'mazda 2', 'mini', 'mini cooper', 'smart', 'fortwo', 'forfour'],
-            berline: ['megane', 'talisman', 'laguna', 'fluence', 'latitude', 'safrane', '308', '307', '306', '408', '508', '407', '406', '607', 'c4', 'c5', 'ds4', 'ds5', 'xsara', 'xantia', 'c-elysee', 'ds 4', 'ds 9', 'golf', 'passat', 'arteon', 'jetta', 'bora', 'scirocco', 'beetle', 'coccinelle', 'id.3', 'leon', 'toledo', 'exeo', 'octavia', 'superb', 'rapid', 'scala', 'a3', 'a4', 'a5', 'a6', 'a7', 'tt', 'serie 1', 'serie 2', 'serie 3', 'serie 4', 'serie 5', 'classe a', 'classe c', 'classe e', 'cla', 'cls', 'classe b', 'focus', 'mondeo', 'astra', 'insignia', 'vectra', 'corolla', 'auris', 'prius', 'avensis', 'camry', 'civic', 'accord', 'mazda 3', 'mazda 6', 'impreza', 'ceed', 'proced', 'i30', 'ioniq', 'elantra', 'i40', 'optima', 'stinger', 'pulsar', 'leaf', 'model 3', 'model s', 'giulia', '147', '159', 'delta', 'xe', 'xf'],
-            suv: ['captur', 'arkana', 'austral', 'kadjar', 'koleos', 'scenic', 'espace', 'kangoo', 'duster', 'jogger', 'lodgy', 'dokker', '2008', '3008', '5008', '4008', 'rifter', 'partner', 'berlingo', 'c3 aircross', 'c4 aircross', 'c5 aircross', 'c4 cactus', 'picasso', 'c4 picasso', 'grand c4 picasso', 'c8', 'ds7', 'ds3 crossback', 'ds 3 crossback', 'ds 7', 'tiguan', 't-roc', 't-cross', 'touareg', 'touran', 'sharan', 'caddy', 'multivan', 'q2', 'q3', 'q4', 'q5', 'q7', 'q8', 'ateca', 'arona', 'tarraco', 'karoq', 'kodiaq', 'kamiq', 'yeti', 'enyaq', 'cupra formentor', 'x1', 'x2', 'x3', 'x4', 'x5', 'x6', 'gla', 'glb', 'glc', 'gle', 'glk', 'vito', 'classe v', 'kuga', 'puma', 'ecosport', 'edge', 'explorer', 'c-max', 's-max', 'galaxy', 'mokka', 'mokka x', 'crossland', 'grandland', 'zafira', 'meriva', 'antara', 'yaris cross', 'c-hr', 'rav4', 'highlander', 'land cruiser', 'bz4x', 'verso', 'qashqai', 'juke', 'x-trail', 'aria', 'tucson', 'kona', 'santa fe', 'bayon', 'sportage', 'niro', 'sorento', 'stonic', 'xceed', 'soul', 'cx-3', 'cx-30', 'cx-5', 'cr-v', 'hr-v', 'vitara', 's-cross', 'jimny', 'model y', 'model x', '500x', '500l', 'renegade', 'compass', 'cherokee', 'evoque', 'velar', 'range rover', 'discovery', 'f-pace', 'e-pace', 'stelvio', 'tonale', 'macan', 'cayenne']
-        };
-
-        function searchCar() {
-            const input = document.getElementById('car-input').value.toLowerCase().trim();
-            const feedback = document.getElementById('car-feedback');
+    <!-- Contact Section / Footer -->
+    <footer id="contact" class="bg-darker pt-20 pb-32 border-t border-white/5 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-3xl md:text-5xl font-bold mb-6">Prêt à redonner <span class="text-primary">l'éclat du neuf</span> à votre véhicule ?</h2>
+                    <p class="text-gray-400 mb-8 text-lg">Contactez Mathis Parrotin directement pour valider votre devis ou poser vos questions.</p>
+                    
+                    <div class="space-y-6">
+                        <a href="tel:0651649049" class="flex items-center gap-4 group">
+                            <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+                                <i class="fas fa-phone-alt"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500 uppercase tracking-wider">Téléphone</p>
+                                <p class="text-xl font-bold">06 51 64 90 49</p>
+                            </div>
+                        </a>
+                        <a href="mailto:cleanmathis@gmail.com" class="flex items-center gap-4 group">
+                            <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500 uppercase tracking-wider">Email</p>
+                                <p class="text-xl font-bold">cleanmathis@gmail.com</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="glass-panel p-8 rounded-3xl relative overflow-hidden">
+                    <div class="absolute inset-0 bg-primary/5"></div>
+                    <div class="relative z-10 text-center">
+                        <div class="w-24 h-24 bg-dark rounded-full mx-auto mb-6 flex items-center justify-center border-2 border-primary/30">
+                            <i class="fas fa-user-tie text-4xl text-primary"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-2">Mathis Parrotin</h3>
+                        <p class="text-primary font-medium mb-6">Detailing & Services de nettoyage</p>
+                        <p class="text-gray-400 text-sm mb-6">Spécialiste en esthétique automobile, passionné par le perfectionnisme et les détails invisibles à l'œil nu.</p>
+                    </div>
+                </div>
+            </div>
             
-            if(input.length < 2) {
-                feedback.innerHTML = "";
-                return;
-            }
+            <div class="mt-20 pt-8 border-t border-white/10 text-center text-sm text-gray-600 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p>&copy; 2026 Clean Mathis. Tous droits réservés.</p>
+                <div class="flex gap-4">
+                    <span class="hover:text-primary cursor-pointer transition-colors">Mentions légales</span>
+                    <span class="hover:text-primary cursor-pointer transition-colors">CGV</span>
+                </div>
+            </div>
+        </div>
+    </footer>
 
-            let found = null;
-            let categoryName = "";
-
-            if(carDB.citadine.some(car => input.includes(car))) { found = 'citadine'; categoryName = "Citadine détectée !"; }
-            else if(carDB.berline.some(car => input.includes(car))) { found = 'berline'; categoryName = "Berline détectée !"; }
-            else if(carDB.suv.some(car => input.includes(car))) { found = 'suv'; categoryName = "SUV/4x4/Monospace détecté !"; }
-
-            if(found) {
-                feedback.innerHTML = `<span style="color:#4caf50; font-weight:bold;">✨ ${categoryName}</span>`;
-                if(found === 'citadine') document.getElementById('default-vehicle').click();
-                if(found === 'berline') document.getElementById('btn-berline').click();
-                if(found === 'suv') document.getElementById('btn-suv').click();
-            } else {
-                feedback.innerHTML = "<span style='color:#aaa;'>Modèle non reconnu, sélectionnez manuellement ci-dessous.</span>";
-            }
-        }
-
-        const prices = {
-            cleaning: {
-                basic: { int: 45, ext: 35, pack: 75 },
-                avancer: { int: 70, ext: 60, pack: 110 },
-                pro: { int: 90, ext: 80, pack: 160 }
-            },
-            polishing: {
-                leger: [250, 325, 400], 
-                intermediaire: [350, 475, 600]
-            },
-            ceramic: { 3: 120, 5: 180 },
-            options: { opt_dep_carr: 10, opt_dep_vitre: 15 }
-        };
-
-        const features = {
-            basic: { int: "Aspiration, moquette & tableau de bord", ext: "Lavage main & vitres" },
-            avancer: { int: "Basic + Ventilation & portes", ext: "Basic + Jantes & passages roues" },
-            pro: { int: "Avancé + Detailing complet", ext: "Avancé + Detailing complet" }
-        };
-
-        let state = {
-            vehicleIndex: 0, 
-            level: 'basic',
-            interieur: false,
-            exterieur: false,
-            polishing: null,
-            ceramic: null,
-            opt_dep_carr: false,
-            opt_dep_vitre: false
-        };
-
-        function selectVehicle(type, el) {
-            document.querySelectorAll('.vehicle-options .option-card').forEach(c => c.classList.remove('selected-vehicle'));
-            el.classList.add('selected-vehicle');
-            if(type === 'citadine') state.vehicleIndex = 0;
-            if(type === 'berline') state.vehicleIndex = 1;
-            if(type === 'suv') state.vehicleIndex = 2;
-            updatePolishingDisplay();
-            calculateTotal();
-        }
-
-        function setLevel(lvl, el) {
-            state.level = lvl;
-            document.querySelectorAll('.level-btn').forEach(b => b.classList.remove('active'));
-            el.classList.add('active');
-            document.getElementById('price-int').innerText = prices.cleaning[lvl].int + '€';
-            document.getElementById('price-ext').innerText = prices.cleaning[lvl].ext + '€';
-            document.getElementById('features-int').innerHTML = `<li>${features[lvl].int}</li>`;
-            document.getElementById('features-ext').innerHTML = `<li>${features[lvl].ext}</li>`;
-            calculateTotal();
-        }
-
-        function toggleOption(opt, el) {
-            state[opt] = !state[opt];
-            el.classList.toggle('selected');
-            calculateTotal();
-        }
-
-        function togglePolissage(type, el) {
-            if (state.polishing === type) {
-                state.polishing = null;
-                el.classList.remove('selected');
-                resetCeramic();
-            } else {
-                state.polishing = type;
-                const cards = el.parentElement.querySelectorAll('.option-card');
-                cards.forEach(c => c.classList.remove('selected'));
-                el.classList.add('selected');
-                document.getElementById('ceramic-section').style.opacity = '1';
-                document.getElementById('ceramic-section').style.pointerEvents = 'auto';
-            }
-            calculateTotal();
-        }
-
-        function toggleCeramic(years, el) {
-            if (state.ceramic === years) {
-                state.ceramic = null;
-                el.classList.remove('selected');
-            } else {
-                state.ceramic = years;
-                const cards = el.parentElement.querySelectorAll('.option-card');
-                cards.forEach(c => c.classList.remove('selected'));
-                el.classList.add('selected');
-            }
-            calculateTotal();
-        }
-
-        function resetCeramic() {
-            state.ceramic = null;
-            document.getElementById('ceramic-section').style.opacity = '0.5';
-            document.getElementById('ceramic-section').style.pointerEvents = 'none';
-            document.querySelectorAll('#ceramic-section .option-card').forEach(c => c.classList.remove('selected'));
-        }
-
-        function updatePolishingDisplay() {
-            document.getElementById('price-polish-leger').innerText = prices.polishing.leger[state.vehicleIndex] + '€';
-            document.getElementById('price-polish-inter').innerText = prices.polishing.intermediaire[state.vehicleIndex] + '€';
-        }
-
-        function calculateTotal() {
-            let total = 0;
-            if (state.interieur && state.exterieur) {
-                total += prices.cleaning[state.level].pack;
-                document.getElementById('pack-msg').style.opacity = '1';
-            } else {
-                if (state.interieur) total += prices.cleaning[state.level].int;
-                if (state.exterieur) total += prices.cleaning[state.level].ext;
-                document.getElementById('pack-msg').style.opacity = '0.5';
-            }
-            if (state.polishing) total += prices.polishing[state.polishing][state.vehicleIndex];
-            if (state.ceramic) total += prices.ceramic[state.ceramic];
-            if (state.opt_dep_carr) total += prices.options.opt_dep_carr;
-            if (state.opt_dep_vitre) total += prices.options.opt_dep_vitre;
-
-            animateValue(document.getElementById('total-display'), total);
-        }
-
-        function animateValue(obj, end) {
-            let start = parseInt(obj.innerHTML.replace('€', ''));
-            if (isNaN(start)) start = 0;
-            if (start === end) return;
-            let range = end - start;
-            let current = start;
-            let increment = end > start ? 1 : -1;
-            let stepTime = Math.abs(Math.floor(10 / (range / 10)));
-            if (Math.abs(range) > 50) { increment = end > start ? 5 : -5; stepTime = 10; }
-            let timer = setInterval(function() {
-                current += increment;
-                if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
-                    current = end;
-                    clearInterval(timer);
-                }
-                obj.innerHTML = current + "€";
-            }, stepTime);
-        }
-
-        document.getElementById('default-vehicle').click(); // Init Citadine
-        
-        function openModal(e) { if(e) e.preventDefault(); document.getElementById('contact-modal').style.display = 'block'; }
-        function closeModal() { document.getElementById('contact-modal').style.display = 'none'; }
-        window.onclick = function(event) { if (event.target == document.getElementById('contact-modal')) closeModal(); }
-    </script>
-</body>
-</html>
-
+    <!-- Contact Modal -->
+    <div id="contact-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center px-4">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeModal()"></div>
+        <div class="glass-panel border border-primary/30 rounded-3xl p-8 max-w-md w-full relative z-10 shadow-[0_0_50px_rgba(255,107,53,0.2)] transform scale-95 opacity-0 transition-all duration-300" id="modal-content">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 transition-colors">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <div class="text-center mb-8">
+                <div class="w-16 h-16 bg-primary/20 text-primary rounded-full flex items-center justify-center text-2xl mx-auto mb-4">
+                    <i class="fas fa-calendar-check"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-2">Réserver ce tarif</h3>
+                <p class="text-gray-400 text-sm">Mentionnez votre estimation lors de l'appel pour gagner du temps !</p>
+            </div>
+            
+            <div class="bg-darker rounded-xl p-4 text-center mb-6 border border-white/5">
+                <p class="text-sm text-gray-500 mb-1">Votre estimation</p>
+                <p class="text-3xl font-bold text-primary" id="modal-price">0€</p>
+            </div>
+            
+            <a href="tel:0651649049" class="block w-full primary-gradient text-white text-center py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-primary/50 transition-all hover:-translate-y-1 mb-3">
+                <i class="fas fa-phone-alt mr-2"></i> Appeler Mathis
+            </a>
+            <a href="mailto:cleanmathis@gmail.com" class="block w-full bg-white/5 border border-white/10 text-white text-center py-3 rounded-xl font-semibold hover:bg-white/10 transition-colors">
+                Envoyer un email
+            </a>
+        </div>
+    </div>
