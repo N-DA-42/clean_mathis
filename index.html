@@ -3,22 +3,164 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clean Mathis - Accueil</title>
+    <!-- Nouveau titre SEO demandé -->
+    <title>Soins esthétique automobiles - Prestige nettoyage | Clean Mathis</title>
+    
+    <!-- Mots-clés pour le référencement (SEO) ajoutés selon le PDF -->
+    <meta name="keywords" content="car wash, lavage auto, auto detailling, detailling, car detailling, nettoyage auto, nettoyage de voiture de luxe, nettoyage, nettoyage intérieur, lavage a domicile, lavage voiture">
+    <meta name="description" content="Clean Mathis : Detailing et services de nettoyage de véhicules. Soins esthétiques automobiles de prestige.">
     
     <link rel="icon" type="image/png" href="favicon.png">
-    <link rel="apple-touch-icon" href="favicon.png">
     
+    <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
-
+    
+    <!-- Tailwind CSS pour la structure responsive -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Librairies d'animation GSAP -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/MotionPathPlugin.min.js"></script>
+
+    <style>
+        :root {
+            --bg-dark: #00151c;
+            --bg-light: #053b4d;
+            --text-color: #ffffff;
+            --primary-orange: #ff6b35;
+            --glow-color: #ff9e00;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            background: radial-gradient(circle at center 30%, var(--bg-light), var(--bg-dark));
+            background-attachment: fixed;
+            color: var(--text-color);
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+            width: 100%;
+            min-height: 100vh;
+        }
+
+        /* --- NAV --- */
+        nav { 
+            position: fixed; top: 0; left: 0; right: 0; height: 80px; 
+            padding: 0 50px; display: flex; justify-content: space-between; align-items: center; 
+            z-index: 1000; opacity: 0; background: rgba(0, 21, 28, 0.95); backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.3s;
+        }
+        .logo { font-weight: 800; font-size: 1.5rem; letter-spacing: 1px; color: #fff; text-decoration: none; z-index: 1001; }
+        .logo span { color: var(--primary-orange); }
+
+        .nav-links { display: flex; gap: 30px; height: 100%; align-items: center; }
+        .nav-links a { 
+            color: #fff; text-decoration: none; font-size: 0.9rem; font-weight: 500; 
+            text-transform: uppercase; transition: all 0.3s; position: relative;
+            height: 100%; display: flex; align-items: center; padding: 0 5px;
+        }
+        .nav-links a:hover, .nav-links a.active { color: var(--primary-orange); }
+        .nav-links a::after { 
+            content: ''; position: absolute; bottom: 25px; left: 0; width: 0%; height: 2px; 
+            background: var(--primary-orange); transition: 0.3s; 
+        }
+        .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+        .burger-menu { display: none; }
+
+        /* --- HERO --- */
+        #hero { 
+            height: 100vh; width: 100%; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; position: relative;
+        }
+        .main-title { font-size: 5rem; margin-bottom: 20px; line-height: 1.1; color: transparent; position: relative; font-weight: 800; white-space: nowrap; }
+        #title-wrapper { display: inline-block; position: relative; color: transparent; }
+        #target-i { position: relative; display: inline-block; color: transparent; }
+
+        .subtitle-hero { font-size: 1.5rem; color: #b0bec5; letter-spacing: 2px; opacity: 0; transform: translateY(20px); }
+        .scroll-down { margin-top: 80px; opacity: 0; color: var(--primary-orange); font-size: 1.5rem; animation: float 2s infinite; }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(15px); } }
+
+        /* --- ÉLÉMENTS GRAPHIQUES (Ligne et Loader) --- */
+        .line-wrapper { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+        #guide-line { fill: none; stroke: rgba(255, 255, 255, 0.05); stroke-width: 1px; }
+        #lit-line { fill: none; stroke: var(--primary-orange); stroke-width: 2px; filter: drop-shadow(0 0 5px var(--primary-orange)); }
+        .glow-orb { width: 10px; height: 10px; background: #fff; border-radius: 50%; position: absolute; top: 0; left: 0; z-index: 50; transform: translate(-50%, -50%); opacity: 0; box-shadow: 0 0 10px 2px #fff, 0 0 20px 10px var(--primary-orange), 0 0 50px 20px rgba(255, 107, 53, 0.3); pointer-events: none; }
+
+        #loader-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #000; z-index: 9999; display: flex; align-items: center; justify-content: center; }
+        .loader-content { position: relative; width: 300px; height: 300px; display: flex; align-items: center; justify-content: center; }
+        #loader-text { font-size: 1.5rem; font-weight: 800; color: #fff; letter-spacing: 1px; text-transform: uppercase; position: relative; z-index: 2; white-space: nowrap; animation: text-glow 2s ease-in-out infinite alternate; }
+        #loader-circle { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; border: 2px solid transparent; border-top-color: var(--primary-orange); border-right-color: var(--primary-orange); animation: spin 1.5s linear infinite; box-shadow: 0 0 20px rgba(255, 107, 53, 0.3); z-index: 1; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .clone-element { position: fixed; z-index: 10000; pointer-events: none; margin: 0 !important; padding: 0 !important; transform-origin: center center; }
+
+        /* --- STYLES COMMUNS --- */
+        .reveal-text { opacity: 0; transform: translateY(50px); filter: blur(5px); transition: all 0.8s ease-out; }
+        .reveal-text.visible { opacity: 1; transform: translateY(0); filter: blur(0); }
+        .warm-highlight { color: var(--primary-orange); text-shadow: 0 0 25px rgba(255, 107, 53, 0.5); font-weight: 700; }
+        
+        .glass-card { background: rgba(255, 255, 255, 0.03); border-top: 1px solid rgba(255,255,255,0.1); padding: 40px; border-radius: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); transition: 0.3s; height: 100%; }
+        .glass-card:hover { transform: translateY(-10px); background: rgba(255, 255, 255, 0.05); border-color: var(--primary-orange); }
+        
+        .section-title { font-size: 3rem; margin-bottom: 40px; text-transform: uppercase; letter-spacing: 2px; text-align: center; }
+
+        /* --- CALCULATEUR DE TARIFS --- */
+        .calc-section { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 20px; padding: 30px; margin-bottom: 30px; transition: 0.3s; }
+        .step-number { background: var(--primary-orange); color: #fff; width: 35px; height: 35px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 15px; font-size: 1.1rem; flex-shrink: 0; }
+        .option-card { background: rgba(0, 0, 0, 0.3); border: 2px solid transparent; border-radius: 15px; padding: 20px; text-align: center; cursor: pointer; transition: 0.2s all; position: relative; overflow: hidden; }
+        .option-card:hover { background: rgba(255, 255, 255, 0.05); }
+        .option-card.selected, .option-card.selected-vehicle { border-color: var(--primary-orange); background: rgba(255, 107, 53, 0.1); box-shadow: 0 0 15px rgba(255, 107, 53, 0.2); }
+        .option-card.selected::after { content: '✔'; position: absolute; top: 5px; right: 10px; color: var(--primary-orange); font-weight: bold; }
+        .option-card i { font-size: 2rem; color: #b0bec5; margin-bottom: 10px; transition: 0.3s; }
+        .option-card.selected i { color: var(--primary-orange); }
+        
+        .level-btn { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 10px 20px; border-radius: 30px; cursor: pointer; font-weight: 600; transition: 0.3s; }
+        .level-btn:hover { border-color: var(--primary-orange); }
+        .level-btn.active { background: var(--primary-orange); border-color: var(--primary-orange); color: #fff; }
+        
+        #car-input { width: 100%; padding: 15px 20px 15px 50px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.3); color: #fff; font-size: 1.1rem; outline: none; transition: 0.3s; }
+        #car-input:focus { border-color: var(--primary-orange); box-shadow: 0 0 15px rgba(255, 107, 53, 0.3); }
+        
+        .total-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(0, 21, 28, 0.95); border-top: 2px solid var(--primary-orange); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; backdrop-filter: blur(10px); z-index: 1000; box-shadow: 0 -5px 30px rgba(0,0,0,0.5); }
+        
+        /* Modal & Buttons */
+        .btn-warm { display: inline-block; background: var(--primary-orange); color: white; padding: 15px 40px; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 1.1rem; box-shadow: 0 10px 30px rgba(255, 107, 53, 0.3); transition: 0.3s; cursor: pointer; border: none; }
+        .btn-warm:hover { transform: scale(1.05); background: #ff5500; }
+        
+        .modal { display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0, 0, 0, 0.8); backdrop-filter: blur(5px); }
+        .modal-content { background: linear-gradient(145deg, #052029, #001014); margin: 10% auto; padding: 40px; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; width: 90%; max-width: 500px; position: relative; text-align: center; box-shadow: 0 0 50px rgba(255, 107, 53, 0.2); }
+        .close-modal { color: #aaa; position: absolute; top: 15px; right: 25px; font-size: 28px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .close-modal:hover { color: var(--primary-orange); }
+
+        /* --- RESPONSIVE MOBILE --- */
+        @media (max-width: 768px) {
+            nav { height: 60px; padding: 0 20px; background: rgba(0, 21, 28, 0.98); }
+            .logo { font-size: 1.2rem; }
+            .burger-menu { display: block; font-size: 1.5rem; color: #fff; cursor: pointer; }
+            .nav-links { position: fixed; top: 60px; right: -100%; width: 100%; height: calc(100vh - 60px); background: #00151c; flex-direction: column; justify-content: flex-start; padding-top: 50px; transition: 0.3s ease-in-out; border-top: 1px solid rgba(255,255,255,0.1); }
+            .nav-links.active-menu { right: 0; }
+            .nav-links a { font-size: 1.4rem; margin: 15px 0; height: auto; display: block; width: 100%; text-align: center; }
+            .nav-links a::after { display: none; }
+            
+            .main-title { font-size: 2.5rem; white-space: normal; }
+            .section-title { font-size: 2rem; }
+            .total-bar { flex-direction: column; gap: 10px; padding: 15px; }
+            .btn-warm { width: 100%; text-align: center; padding: 12px 20px; }
+            
+            #hero { padding-top: 60px; }
+        }
+        
+        /* Gallery */
+        .gallery-item { height: 250px; background-color: #000; border-radius: 15px; overflow: hidden; position: relative; cursor: pointer; transition: 0.3s; border: 1px solid rgba(255,255,255,0.1); }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; opacity: 0.7; }
+        .gallery-item:hover img { transform: scale(1.1); opacity: 1; }
+    </style>
 </head>
-<body>
+<body class="antialiased">
 
     <div id="loader-overlay">
         <div class="loader-content">
@@ -28,18 +170,19 @@
     </div>
 
     <nav>
-        <a href="index.html?intro=false" class="logo">CLEAN <span>MATHIS</span></a>
+        <a href="#accueil" class="logo">CLEAN <span>MATHIS</span></a>
         
         <div class="burger-menu" onclick="toggleMenu()">
             <i class="fas fa-bars"></i>
         </div>
 
         <div class="nav-links">
-            <a href="index.html?intro=false">Accueil</a>
-            <a href="prestations.html">Prestations</a>
-            <a href="tarifs.html">Tarifs</a>
-            <a href="photos.html">Photos</a>
-            <a href="#" onclick="openModal(event)">Contact</a>
+            <a href="#accueil" onclick="toggleMenu()">Accueil</a>
+            <a href="#engagements" onclick="toggleMenu()">Engagements</a>
+            <a href="#prestations" onclick="toggleMenu()">Prestations</a>
+            <a href="#tarifs" onclick="toggleMenu()">Tarifs</a>
+            <a href="#photos" onclick="toggleMenu()">Photos</a>
+            <a href="#" onclick="openModal(event); toggleMenu()">Contact</a>
         </div>
     </nav>
 
@@ -52,85 +195,636 @@
     </div>
 
     <main>
-        <section id="hero">
-            <div class="hero-content">
+        <section id="accueil" class="relative z-10 px-6 lg:px-20 min-h-screen flex flex-col justify-center items-center">
+            <div class="text-center w-full max-w-5xl">
                 <h1 class="main-title">
                     <span id="title-wrapper">CLEAN MATH<span id="target-i">I</span>S</span>
                 </h1>
-                <p class="subtitle-hero">Redonnez vie à votre intérieur</p>
+                <p class="subtitle-hero mb-8">Soins esthétiques automobiles - Prestige nettoyage</p>
+                <p class="text-xl md:text-2xl font-medium text-gray-300 reveal-text mt-6">
+                    Vous êtes à la recherche d'un <span class="warm-highlight">nettoyage</span> pour votre véhicule ?<br>
+                    Vous voulez qu'il soit entre de <span class="warm-highlight">bonnes mains</span> ?
+                </p>
             </div>
             <div class="scroll-down"><i class="fas fa-chevron-down"></i></div>
         </section>
 
-        <section id="services">
-            <div class="text-block left reveal-text">
-                Vous êtes à la recherche d'un <span class="warm-highlight">nettoyage</span> pour votre véhicule ?
+        <section id="engagements" class="relative z-10 px-6 lg:px-20 py-24 min-h-screen flex flex-col justify-center">
+            <div class="text-center max-w-4xl mx-auto mb-16 reveal-text">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6">Vous êtes alors au <span class="warm-highlight">bon endroit !</span></h2>
+                <p class="text-xl text-gray-300">Ici nous prenons soin de votre véhicule comme si c'était le nôtre.</p>
             </div>
-            <div class="text-block right reveal-text">
-                Vous voulez que votre véhicule soit entre de <span class="warm-highlight">bonnes mains</span> ?
-            </div>
-        </section>
 
-        <section id="solution">
-            <div class="centered-content reveal-text">
-                <h2>Vous êtes alors au <span class="warm-highlight">bon endroit !</span></h2>
-                <p>Ici nous prenons soin de votre véhicule comme si c'était le nôtre.</p>
-            </div>
-        </section>
-
-        <section id="engagements">
             <h2 class="section-title reveal-text">Nos Engagements</h2>
-            <div class="cards-container">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
                 <div class="glass-card reveal-text">
-                    <h3>Confiance Totale</h3>
-                    <p>Un accompagnement et des explications claires pour une confiance totale.</p>
+                    <h3 class="text-2xl text-[#ff6b35] font-bold mb-4"><i class="fas fa-handshake mr-2"></i> Confiance Totale</h3>
+                    <p class="text-lg text-gray-300">Un accompagnement et des explications claires pour une confiance totale.</p>
                 </div>
                 <div class="glass-card reveal-text">
-                    <h3>Soin Chirurgical</h3>
-                    <p>Chaque véhicule a le droit à une prise en charge chirurgicale adaptée à son utilisation.</p>
+                    <h3 class="text-2xl text-[#ff6b35] font-bold mb-4"><i class="fas fa-microscope mr-2"></i> Soin Chirurgical</h3>
+                    <p class="text-lg text-gray-300">Chaque véhicule a le droit à une prise en charge chirurgicale adaptée à son utilisation.</p>
                 </div>
                 <div class="glass-card reveal-text">
-                    <h3>Rapidité</h3>
-                    <p>Une rapidité pour vous donner rendez-vous le plus rapidement possible.</p>
+                    <h3 class="text-2xl text-[#ff6b35] font-bold mb-4"><i class="fas fa-tachometer-alt mr-2"></i> Rapidité</h3>
+                    <p class="text-lg text-gray-300">Une rapidité pour vous donner rendez-vous le plus rapidement possible.</p>
                 </div>
                 <div class="glass-card reveal-text">
-                    <h3>Produits Pro</h3>
-                    <p>Des traitements effectués avec une panoplie de gammes professionnelles.</p>
+                    <h3 class="text-2xl text-[#ff6b35] font-bold mb-4"><i class="fas fa-spray-can mr-2"></i> Produits Pro</h3>
+                    <p class="text-lg text-gray-300">Des traitements effectués avec une panoplie de gammes professionnelles.</p>
                 </div>
             </div>
-        </section>
-
-        <section id="conclusion">
-            <div class="text-block centered reveal-text">
+            
+            <div class="text-center mt-20 text-2xl font-semibold max-w-4xl mx-auto reveal-text">
                 Un parcours du detailing, des détails que vous ne voyez pas et un retour au <span class="warm-highlight">neuf garanti</span>.
             </div>
         </section>
 
-        <section id="contact">
-            <div class="contact-card reveal-text">
-                <h2>MATHIS PARROTIN</h2>
-                <p class="subtitle">Detailing & Services de nettoyage</p>
-                <a href="tel:0651649049" class="btn-warm"><i class="fas fa-phone"></i> 06 51 64 90 49</a>
-                <p class="email">cleanmathis@gmail.com</p>
+        <section id="prestations" class="relative z-10 px-6 lg:px-20 py-24 min-h-screen flex flex-col justify-center">
+            <h2 class="section-title reveal-text">Nos Prestations</h2>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto reveal-text">
+                <div class="glass-card flex flex-col items-center text-center">
+                    <i class="fas fa-couch text-5xl text-[#ff6b35] mb-4"></i>
+                    <h4 class="text-xl font-bold mb-2">Nettoyage Intérieur</h4>
+                    <p class="text-sm text-gray-400">Aspiration, moquette, tableau de bord, aérations, portes intérieures...</p>
+                </div>
+                <div class="glass-card flex flex-col items-center text-center">
+                    <i class="fas fa-shower text-5xl text-[#ff6b35] mb-4"></i>
+                    <h4 class="text-xl font-bold mb-2">Nettoyage Extérieur</h4>
+                    <p class="text-sm text-gray-400">Lavage manuel, jantes, passages de roues, vitres.</p>
+                </div>
+                <div class="glass-card flex flex-col items-center text-center">
+                    <i class="fas fa-magic text-5xl text-[#ff6b35] mb-4"></i>
+                    <h4 class="text-xl font-bold mb-2">Polissage</h4>
+                    <p class="text-sm text-gray-400">Léger ou Intermédiaire. Supprime les micro-rayures et ravive la brillance.</p>
+                </div>
+                <div class="glass-card flex flex-col items-center text-center">
+                    <i class="fas fa-droplet text-5xl text-[#ff6b35] mb-4"></i>
+                    <h4 class="text-xl font-bold mb-2">Traitement Déperlant</h4>
+                    <p class="text-sm text-gray-400">Carrosserie (3 mois) et Vitres (6 mois).</p>
+                </div>
+                <div class="glass-card flex flex-col items-center text-center border-orange-500 border">
+                    <i class="fas fa-shield-alt text-5xl text-[#ff6b35] mb-4"></i>
+                    <h4 class="text-xl font-bold mb-2">Protection Céramique</h4>
+                    <p class="text-sm text-gray-400">Protection contre les micro-rayures et garantit un éclat permanent. (3 à 5 ans).</p>
+                </div>
+                <div class="glass-card flex flex-col items-center text-center bg-gradient-to-br from-[#052029] to-[#ff6b35]/20 border-[#ff6b35]">
+                    <i class="fas fa-gem text-5xl text-[#ff6b35] mb-4"></i>
+                    <h4 class="text-xl font-bold mb-2 text-[#ff6b35]">Nettoyage Approfondi</h4>
+                    <p class="text-sm text-gray-300 font-semibold mb-2">Formule Ultra Premium</p>
+                    <p class="text-xs text-gray-400">Lavage intérieur & extérieur avec polissage et déperlant vitres et carrosserie.</p>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12 reveal-text">
+                <a href="#tarifs" class="btn-warm">Calculer mon Tarif</a>
             </div>
         </section>
+
+        <section id="tarifs" class="relative z-10 px-6 lg:px-20 py-24 min-h-screen">
+            <div class="text-center max-w-4xl mx-auto mb-12 reveal-text">
+                <h2 class="section-title">Simulateur de Tarif</h2>
+                <p class="text-xl text-gray-300">Configurez votre prestation sur mesure selon vos besoins.</p>
+            </div>
+
+            <div class="max-w-4xl mx-auto reveal-text mb-32"> <!-- margin-bottom for the fixed total bar -->
+                
+                <!-- ÉTAPE 1 : VÉHICULE -->
+                <div class="calc-section">
+                    <h3 class="text-xl font-bold text-white mb-6 flex items-center"><span class="step-number">1</span> Votre Véhicule</h3>
+                    
+                    <div class="relative mb-8 max-w-lg mx-auto">
+                        <input type="text" id="car-input" placeholder="Entrez votre modèle (ex: Clio, Golf, 3008...)" onkeyup="searchCar()">
+                        <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        <div id="car-feedback" class="mt-2 text-center font-medium h-6"></div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="option-card vehicle-card" onclick="selectVehicle('citadine', this)" id="default-vehicle">
+                            <i class="fas fa-car-side"></i>
+                            <h4 class="text-lg font-bold text-white">Citadine</h4>
+                            <p class="text-sm text-gray-400">Ex: Clio, 208, Fiat 500</p>
+                        </div>
+                        <div class="option-card vehicle-card" onclick="selectVehicle('berline', this)" id="btn-berline">
+                            <i class="fas fa-car"></i>
+                            <h4 class="text-lg font-bold text-white">Berline / Compacte</h4>
+                            <p class="text-sm text-gray-400">Ex: Golf, Série 3, 308</p>
+                        </div>
+                        <div class="option-card vehicle-card" onclick="selectVehicle('suv', this)" id="btn-suv">
+                            <i class="fas fa-truck-pickup"></i>
+                            <h4 class="text-lg font-bold text-white">SUV / 4x4</h4>
+                            <p class="text-sm text-gray-400">Ex: 3008, X5, Tiguan</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ÉTAPE 2 : NETTOYAGE -->
+                <div class="calc-section">
+                    <h3 class="text-xl font-bold text-white mb-6 flex items-center"><span class="step-number">2</span> Nettoyage</h3>
+                    
+                    <div class="flex flex-wrap justify-center gap-4 mb-8">
+                        <button class="level-btn active" onclick="setLevel('basic', this)">BASIC</button>
+                        <button class="level-btn" onclick="setLevel('avancer', this)">AVANCÉ</button>
+                        <button class="level-btn" onclick="setLevel('pro', this)">PROFESSIONNEL</button>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="option-card selection-card" onclick="toggleOption('interieur', this)">
+                            <i class="fas fa-couch"></i>
+                            <h4 class="text-lg font-bold text-white">Intérieur</h4>
+                            <p class="text-2xl font-bold text-[#ff6b35] mt-2" id="price-int">45€</p>
+                            <ul class="text-left text-sm text-gray-300 mt-4 list-disc pl-5" id="features-int">
+                                <li>Aspiration, moquette & tableau de bord</li>
+                            </ul>
+                        </div>
+                        <div class="option-card selection-card" onclick="toggleOption('exterieur', this)">
+                            <i class="fas fa-shower"></i>
+                            <h4 class="text-lg font-bold text-white">Extérieur</h4>
+                            <p class="text-2xl font-bold text-[#ff6b35] mt-2" id="price-ext">35€</p>
+                            <ul class="text-left text-sm text-gray-300 mt-4 list-disc pl-5" id="features-ext">
+                                <li>Lavage à la main & nettoyage vitres</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="text-center mt-4 text-sm italic text-gray-400 opacity-50 transition-opacity duration-300" id="pack-msg">
+                        Sélectionnez Intérieur + Extérieur pour activer la Formule Pack avantageuse !
+                    </div>
+                </div>
+
+                <!-- ÉTAPE 3 : POLISSAGE ET CERAMIQUE -->
+                <div class="calc-section">
+                    <h3 class="text-xl font-bold text-white mb-2 flex items-center"><span class="step-number">3</span> Esthétique & Rénovation</h3>
+                    <p class="text-sm text-orange-400 mb-6 italic"><i class="fas fa-exclamation-triangle"></i> Les prix varient en fonction de la catégorie du véhicule pour le polissage.</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div class="option-card selection-card" onclick="togglePolissage('leger', this)">
+                            <i class="fas fa-magic"></i>
+                            <h4 class="text-lg font-bold text-white">Polissage Léger</h4>
+                            <p class="text-sm text-gray-400">(1 étape / Enhancement)</p>
+                            <p class="text-2xl font-bold text-[#ff6b35] mt-2" id="price-polish-leger">250€</p>
+                            <p class="text-xs text-gray-300 mt-2">Idéal pour raviver la brillance et supprimer les micro-rayures très superficielles.</p>
+                        </div>
+                        <div class="option-card selection-card" onclick="togglePolissage('intermediaire', this)">
+                            <i class="fas fa-gem"></i>
+                            <h4 class="text-lg font-bold text-white">Polissage Intermédiaire</h4>
+                            <p class="text-sm text-gray-400">(2 étapes)</p>
+                            <p class="text-2xl font-bold text-[#ff6b35] mt-2" id="price-polish-inter">350€</p>
+                            <p class="text-xs text-gray-300 mt-2">Supprime environ 80-90% des défauts (micro-rayures visibles, tourbillons).</p>
+                        </div>
+                    </div>
+
+                    <div id="ceramic-section" class="border-t border-gray-700 pt-6 mt-6 opacity-50 pointer-events-none transition-all duration-300">
+                        <h4 class="text-lg font-bold text-white mb-2"><i class="fas fa-shield-alt text-[#ff6b35]"></i> Protection Céramique</h4>
+                        <p class="text-xs text-gray-400 mb-4">Protection contre les micro-rayures et garantit un éclat permanent. (Applicable uniquement sur Polissage)</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="option-card selection-card" onclick="toggleCeramic(3, this)">
+                                <h4 class="font-bold">Durée : 3 Ans</h4>
+                                <p class="text-xl font-bold text-[#ff6b35]">+120€</p>
+                            </div>
+                            <div class="option-card selection-card" onclick="toggleCeramic(5, this)">
+                                <h4 class="font-bold">Durée : 5 Ans</h4>
+                                <p class="text-xl font-bold text-[#ff6b35]">+180€</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ÉTAPE 4 : OPTIONS -->
+                <div class="calc-section">
+                    <h3 class="text-xl font-bold text-white mb-6 flex items-center"><span class="step-number">4</span> Options</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="option-card selection-card" onclick="toggleOption('opt_dep_carr', this)">
+                            <h4 class="font-bold text-white">Déperlant Carrosserie</h4>
+                            <p class="text-xs text-gray-400 mb-1">Durée minimale de 3 mois</p>
+                            <p class="text-xl font-bold text-[#ff6b35]">10€</p>
+                        </div>
+                        <div class="option-card selection-card" onclick="toggleOption('opt_dep_vitre', this)">
+                            <h4 class="font-bold text-white">Déperlant Vitres</h4>
+                            <p class="text-xs text-gray-400 mb-1">Durée de 6 mois</p>
+                            <p class="text-xl font-bold text-[#ff6b35]">15€</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FORFAIT ULTRA PREMIUM ALERTE -->
+                <div class="calc-section bg-gradient-to-r from-[#052029] to-[#1a110a] border-[#ff6b35]">
+                    <h3 class="text-xl font-bold text-[#ff6b35] mb-2"><i class="fas fa-star"></i> Nettoyage Approfondi (Ultra Premium)</h3>
+                    <p class="text-sm text-gray-300">Formule ultra premium : lavages intérieur et extérieur avec polissage et déperlant vitres et carrosserie.</p>
+                    <p class="text-lg font-bold text-white mt-2">Tarif estimatif : <span class="text-[#ff6b35]">300€ à 700€</span></p>
+                    <p class="text-xs text-gray-500 mt-1">Contactez-nous directement pour cette prestation sur-mesure.</p>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="photos" class="relative z-10 px-6 lg:px-20 py-24 min-h-screen flex flex-col justify-center">
+            <h2 class="section-title reveal-text">Nos Réalisations</h2>
+            <div class="text-center max-w-4xl mx-auto mb-12 reveal-text">
+                <p class="text-xl text-gray-300">Quelques exemples de véhicules passés entre nos mains.</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto reveal-text">
+                <div class="gallery-item"><img src="https://placehold.co/600x400/00151c/ff6b35?text=Lavage+Exterieur" alt="Réalisation 1" onerror="this.src='https://placehold.co/600x400/00151c/ff6b35?text=Photo+non+dispo'"></div>
+                <div class="gallery-item"><img src="https://placehold.co/600x400/00151c/ff6b35?text=Polissage" alt="Réalisation 2"></div>
+                <div class="gallery-item"><img src="https://placehold.co/600x400/00151c/ff6b35?text=Avant+Apres" alt="Réalisation 3"></div>
+                <div class="gallery-item"><img src="https://placehold.co/600x400/00151c/ff6b35?text=Ceramique" alt="Réalisation 4"></div>
+                <div class="gallery-item"><img src="https://placehold.co/600x400/00151c/ff6b35?text=Jantes" alt="Réalisation 5"></div>
+                <div class="gallery-item"><img src="https://placehold.co/600x400/00151c/ff6b35?text=Cuirs" alt="Réalisation 6"></div>
+            </div>
+        </section>
+
+        <section id="contact" class="relative z-10 px-6 lg:px-20 py-24 flex flex-col justify-center items-center bg-[#000a0d]">
+            <div class="glass-card text-center max-w-3xl w-full reveal-text">
+                <h2 class="text-4xl md:text-5xl font-bold text-white mb-2">MATHIS PARROTIN</h2>
+                <p class="text-xl text-gray-400 mb-10">Detailing & Services de nettoyage de véhicules.</p>
+                
+                <div class="flex flex-col items-center gap-6">
+                    <a href="tel:0651649049" class="btn-warm text-2xl w-full sm:w-auto"><i class="fas fa-phone mr-3"></i> 06 51 64 90 49</a>
+                    <a href="mailto:cleanmathis@gmail.com" class="text-xl font-mono text-[#607d8b] hover:text-white transition"><i class="fas fa-envelope mr-2"></i> cleanmathis@gmail.com</a>
+                </div>
+            </div>
+        </section>
+
     </main>
+
+    <div class="total-bar">
+        <div class="text-xl font-bold text-white flex items-center">
+            Estimation : <span class="text-3xl text-[#ff6b35] ml-4" id="total-display">0€</span>
+        </div>
+        <a href="#" onclick="openModal(event)" class="btn-warm text-sm px-6 py-3">Réserver ce tarif</a>
+    </div>
 
     <div id="contact-modal" class="modal">
         <div class="modal-content">
             <span class="close-modal" onclick="closeModal()">&times;</span>
-            <div class="modal-icon"><i class="fas fa-envelope-open-text"></i></div>
-            <h2>Contactez-nous</h2>
-            <div class="modal-info"><i class="fas fa-phone-alt"></i> 06 51 64 90 49</div>
-            <div class="modal-info"><i class="fas fa-envelope"></i> cleanmathis@gmail.com</div>
-            <a href="tel:0651649049" class="btn-warm" style="margin-top: 20px;">Appeler Maintenant</a>
+            <div class="text-5xl text-[#ff6b35] mb-6"><i class="fas fa-envelope-open-text"></i></div>
+            <h2 class="text-3xl font-bold text-white mb-4">Contactez-nous</h2>
+            <p class="text-gray-300 mb-8">Mentionnez votre estimation lors de l'appel ou du message pour faciliter la prise de rendez-vous !</p>
+            
+            <div class="text-xl text-white mb-4"><i class="fas fa-phone-alt text-[#ff6b35] mr-3"></i> 06 51 64 90 49</div>
+            <div class="text-lg text-gray-400 mb-8 font-mono"><i class="fas fa-envelope text-[#ff6b35] mr-3"></i> cleanmathis@gmail.com</div>
+            
+            <a href="tel:0651649049" class="btn-warm w-full block">Appeler Maintenant</a>
         </div>
     </div>
+
     <script>
+        // --- BASE DE DONNÉES MASSIVE DE VÉHICULES ---
+        const carDB = {
+            citadine: [
+                'clio', 'twingo', 'zoe', 'modus', 'wind', 'r5', 'super 5', 'sandero', 'spring', 'logan', 
+                '208', '207', '206', '108', '107', '106', '1007', '205', 'ion', 'c3', 'c2', 'c1', 'ds3', 'ami', 'saxo', 'ax', 'c-zero', 
+                'polo', 'up', 'lupo', 'fox', 'fabia', 'citigo', 'felicia', 'ibiza', 'mii', 'arosa', 'a1', 'a2',
+                '500', 'panda', 'punto', 'mito', 'ypsilon', 'seicento', 'cinquecento', 'tipo', 'bravo',
+                'fiesta', 'ka', 'corsa', 'adam', 'karl', 'agila', 'tigra',
+                'yaris', 'aygo', 'iq', 'micra', 'pixo', 'swift', 'ignis', 'alto', 'celerio', 'splash', 'picanto', 'rio', 'i10', 'i20', 'getz', 'jazz', 'colt', 'space star', 'mazda 2', 'mini', 'smart'
+            ],
+            berline: [
+                'megane', 'talisman', 'laguna', 'fluence', 'latitude', 'safrane', 'vel satis', '308', '307', '306', '408', '508', '407', '406', '607', 'c4', 'c5', 'ds4', 'ds5', 'ds9', 'xsara', 'xantia', 'xm', 'c6',
+                'golf', 'passat', 'arteon', 'jetta', 'bora', 'scirocco', 'beetle', 'id3', 'leon', 'toledo', 'exeo', 'octavia', 'superb', 'rapid', 'scala', 'a3', 'a4', 'a5', 'a6', 'a7', 'tt', 'serie 1', 'serie 2', 'serie 3', 'serie 4', 'serie 5', 'classe a', 'classe c', 'classe e', 'cla', 'cls', 
+                'focus', 'mondeo', 'astra', 'insignia', 'vectra', 'model 3', 'model s',
+                'corolla', 'auris', 'prius', 'avensis', 'camry', 'civic', 'accord', 'mazda 3', 'mazda 6', 'impreza', 'ceed', 'i30', 'ioniq', 'elantra', 'giulia', '147', '156', '159', 'delta', 'xe', 'xf'
+            ],
+            suv: [
+                'captur', 'arkana', 'austral', 'rafale', 'kadjar', 'koleos', 'scenic', 'espace', 'kangoo', 'duster', 'jogger', 'lodgy', 'dokker', '2008', '3008', '5008', '4008', 'rifter', 'partner', 'berlingo', 'c3 aircross', 'c5 aircross', 'ds7', 'ds3 crossback',
+                'tiguan', 't-roc', 't-cross', 'touareg', 'touran', 'sharan', 'caddy', 'q2', 'q3', 'q5', 'q7', 'q8', 'ateca', 'arona', 'tarraco', 'formentor', 'karoq', 'kodiaq', 'kamiq', 'yeti', 'x1', 'x2', 'x3', 'x4', 'x5', 'x6', 'gla', 'glb', 'glc', 'gle', 'kuga', 'puma', 'ecosport', 'mokka', 'crossland', 'grandland', 'zafira', 'meriva',
+                'yaris cross', 'chr', 'rav4', 'highlander', 'qashqai', 'juke', 'xtrail', 'tucson', 'kona', 'santa fe', 'sportage', 'niro', 'sorento', 'stonic', 'cx3', 'cx30', 'cx5', 'vitara', 'model y', 'model x', 'renegade', 'compass', 'cherokee', 'evoque', 'velar', 'xc40', 'xc60', 'xc90'
+            ]
+        };
+
+        // --- TARIFICATION EXACTE SELON PDF ---
+        const prices = {
+            cleaning: {
+                basic: { int: 45, ext: 35, pack: 75 },
+                avancer: { int: 70, ext: 60, pack: 110 },
+                pro: { int: 90, ext: 80, pack: 160 }
+            },
+            polishing: {
+                // Index: 0=Citadine, 1=Berline, 2=SUV
+                leger: [250, 325, 400], 
+                intermediaire: [350, 475, 600]
+            },
+            ceramic: { 3: 120, 5: 180 },
+            options: { opt_dep_carr: 10, opt_dep_vitre: 15 }
+        };
+
+        const features = {
+            basic: { int: "Aspiration, moquette & tableau de bord", ext: "Lavage à la main & nettoyage vitres" },
+            avancer: { int: "Pack Basic, ventilation & portes intérieures", ext: "Pack Basic, passages roues & jantes" },
+            pro: { int: "Pack Avancé & Detailing complet", ext: "Pack Avancé & Detailing complet" }
+        };
+
+        let state = {
+            vehicleIndex: 0, 
+            level: 'basic',
+            interieur: false,
+            exterieur: false,
+            polishing: null,
+            ceramic: null,
+            opt_dep_carr: false,
+            opt_dep_vitre: false
+        };
+
+        // --- LOGIQUE METIER CALCULATEUR ---
+        function searchCar() {
+            const input = document.getElementById('car-input').value.toLowerCase().trim().replace(/[-\s]/g, '');
+            const feedback = document.getElementById('car-feedback');
+            
+            if(input.length < 2) { feedback.innerHTML = ""; return; }
+
+            let found = null;
+            let categoryName = "";
+            const check = (list) => list.some(car => input.includes(car.replace(/[-\s]/g, '')) || car.replace(/[-\s]/g, '').includes(input));
+            
+            if(check(carDB.citadine)) { found = 'citadine'; categoryName = "Citadine détectée !"; }
+            else if(check(carDB.berline)) { found = 'berline'; categoryName = "Berline/Compacte détectée !"; }
+            else if(check(carDB.suv)) { found = 'suv'; categoryName = "SUV/4x4/Monospace détecté !"; }
+
+            if(found) {
+                feedback.innerHTML = `<span style="color:#4caf50;">✨ ${categoryName}</span>`;
+                if(found === 'citadine') document.getElementById('default-vehicle').click();
+                if(found === 'berline') document.getElementById('btn-berline').click();
+                if(found === 'suv') document.getElementById('btn-suv').click();
+            } else {
+                feedback.innerHTML = "<span style='color:#aaa;'>Modèle non reconnu, sélectionnez manuellement ci-dessous.</span>";
+            }
+        }
+
+        function selectVehicle(type, el) {
+            document.querySelectorAll('.vehicle-card').forEach(c => c.classList.remove('selected-vehicle'));
+            el.classList.add('selected-vehicle');
+            if(type === 'citadine') state.vehicleIndex = 0;
+            if(type === 'berline') state.vehicleIndex = 1;
+            if(type === 'suv') state.vehicleIndex = 2;
+            updatePolishingDisplay();
+            calculateTotal();
+        }
+
+        function setLevel(lvl, el) {
+            state.level = lvl;
+            document.querySelectorAll('.level-btn').forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
+            document.getElementById('price-int').innerText = prices.cleaning[lvl].int + '€';
+            document.getElementById('price-ext').innerText = prices.cleaning[lvl].ext + '€';
+            document.getElementById('features-int').innerHTML = `<li>${features[lvl].int}</li>`;
+            document.getElementById('features-ext').innerHTML = `<li>${features[lvl].ext}</li>`;
+            calculateTotal();
+        }
+
+        function toggleOption(opt, el) {
+            state[opt] = !state[opt];
+            el.classList.toggle('selected');
+            calculateTotal();
+        }
+
+        function togglePolissage(type, el) {
+            if (state.polishing === type) {
+                state.polishing = null;
+                el.classList.remove('selected');
+                resetCeramic();
+            } else {
+                state.polishing = type;
+                const cards = el.parentElement.querySelectorAll('.option-card');
+                cards.forEach(c => c.classList.remove('selected'));
+                el.classList.add('selected');
+                document.getElementById('ceramic-section').style.opacity = '1';
+                document.getElementById('ceramic-section').style.pointerEvents = 'auto';
+            }
+            calculateTotal();
+        }
+
+        function toggleCeramic(years, el) {
+            if (state.ceramic === years) {
+                state.ceramic = null;
+                el.classList.remove('selected');
+            } else {
+                state.ceramic = years;
+                const cards = el.parentElement.querySelectorAll('.option-card');
+                cards.forEach(c => c.classList.remove('selected'));
+                el.classList.add('selected');
+            }
+            calculateTotal();
+        }
+
+        function resetCeramic() {
+            state.ceramic = null;
+            document.getElementById('ceramic-section').style.opacity = '0.3';
+            document.getElementById('ceramic-section').style.pointerEvents = 'none';
+            document.querySelectorAll('#ceramic-section .option-card').forEach(c => c.classList.remove('selected'));
+        }
+
+        function updatePolishingDisplay() {
+            document.getElementById('price-polish-leger').innerText = prices.polishing.leger[state.vehicleIndex] + '€';
+            document.getElementById('price-polish-inter').innerText = prices.polishing.intermediaire[state.vehicleIndex] + '€';
+        }
+
+        function calculateTotal() {
+            let total = 0;
+            // Gestion Pack Interieur + Exterieur
+            if (state.interieur && state.exterieur) {
+                total += prices.cleaning[state.level].pack;
+                document.getElementById('pack-msg').style.opacity = '1';
+                document.getElementById('pack-msg').style.color = '#4caf50';
+                document.getElementById('pack-msg').innerText = "✨ Formule Pack Activée !";
+            } else {
+                if (state.interieur) total += prices.cleaning[state.level].int;
+                if (state.exterieur) total += prices.cleaning[state.level].ext;
+                document.getElementById('pack-msg').style.opacity = '0.5';
+                document.getElementById('pack-msg').style.color = '';
+                document.getElementById('pack-msg').innerText = "Sélectionnez Intérieur + Extérieur pour activer la Formule Pack avantageuse !";
+            }
+            
+            if (state.polishing) total += prices.polishing[state.polishing][state.vehicleIndex];
+            if (state.ceramic && state.polishing) total += prices.ceramic[state.ceramic]; // Céramique nécessite polissage
+            if (state.opt_dep_carr) total += prices.options.opt_dep_carr;
+            if (state.opt_dep_vitre) total += prices.options.opt_dep_vitre;
+
+            animateValue(document.getElementById('total-display'), total);
+        }
+
+        function animateValue(obj, end) {
+            let start = parseInt(obj.innerHTML.replace('€', ''));
+            if (isNaN(start)) start = 0;
+            if (start === end) return;
+            let range = end - start;
+            let current = start;
+            let increment = end > start ? 1 : -1;
+            let stepTime = Math.abs(Math.floor(20 / (range / 10)));
+            if (Math.abs(range) > 50) { increment = end > start ? 5 : -5; stepTime = 10; }
+            let timer = setInterval(function() {
+                current += increment;
+                if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
+                    current = end;
+                    clearInterval(timer);
+                }
+                obj.innerHTML = current + "€";
+            }, stepTime);
+        }
+
+        // Init Citadine
+        document.getElementById('default-vehicle').click(); 
+
+        // --- NAVIGATION MOBILE ET MODALS ---
+        function toggleMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            navLinks.classList.toggle('active-menu');
+        }
+
         function openModal(e) { if(e) e.preventDefault(); document.getElementById('contact-modal').style.display = 'block'; }
         function closeModal() { document.getElementById('contact-modal').style.display = 'none'; }
         window.onclick = function(event) { if (event.target == document.getElementById('contact-modal')) closeModal(); }
+
+        // --- ANIMATIONS GSAP & SCROLL ---
+        const DOT_OFFSET_X = 9;   
+        const DOT_OFFSET_Y = -15; 
+        
+        if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+        
+        let animationStarted = false;
+        function safeStart() { 
+            if (animationStarted) return; 
+            animationStarted = true; 
+            setTimeout(playCinematicIntro, 100); 
+        }
+        
+        if (document.fonts && document.fonts.ready) { 
+            document.fonts.ready.then(safeStart).catch(safeStart); 
+        } else { 
+            window.addEventListener('load', safeStart); 
+        }
+        setTimeout(safeStart, 2000); // Fallback
+
+        function playCinematicIntro() {
+            const loaderText = document.getElementById("loader-text");
+            const loaderCircle = document.getElementById("loader-circle");
+            const loaderOverlay = document.getElementById("loader-overlay");
+            const titleWrapper = document.getElementById("title-wrapper");
+            const targetI = document.getElementById("target-i");
+            const mainTitle = document.querySelector(".main-title");
+            
+            gsap.delayedCall(1, () => {
+                const startRectText = loaderText.getBoundingClientRect();
+                const endRectTitle = titleWrapper.getBoundingClientRect();
+                const cloneText = titleWrapper.cloneNode(true);
+                document.body.appendChild(cloneText);
+                cloneText.id = "clone-title-wrapper"; 
+                cloneText.querySelectorAll("*").forEach(c => { c.removeAttribute("id"); c.style.color = "#fff"; });
+                
+                const scaleRatio = startRectText.width / endRectTitle.width;
+                const startCenterX = startRectText.left + (startRectText.width / 2);
+                const startCenterY = startRectText.top + (startRectText.height / 2);
+                const endCenterX = endRectTitle.left + (endRectTitle.width / 2);
+                const endCenterY = endRectTitle.top + (endRectTitle.height / 2);
+                
+                gsap.set(cloneText, { position: "fixed", top: endRectTitle.top, left: endRectTitle.left, width: endRectTitle.width, margin: 0, fontSize: window.getComputedStyle(titleWrapper.parentElement).fontSize, lineHeight: 1.1, fontWeight: 800, color: "#ffffff", zIndex: 10001, className: "clone-element", textAlign: "center", transformOrigin: "center center", x: startCenterX - endCenterX, y: startCenterY - endCenterY, scale: scaleRatio, textShadow: "0 0 20px #ff6b35, 0 0 40px #ff6b35", pointerEvents: "none" });
+                
+                const startRectCircle = loaderCircle.getBoundingClientRect();
+                const cloneCircle = loaderCircle.cloneNode(true);
+                document.body.appendChild(cloneCircle);
+                gsap.set(cloneCircle, { position: "fixed", top: startRectCircle.top, left: startRectCircle.left, width: startRectCircle.width, height: startRectCircle.height, margin: 0, zIndex: 10002, className: "clone-element", border: "2px solid transparent", borderTopColor: "#ff6b35", borderRightColor: "#ff6b35", rotation: 0, pointerEvents: "none" });
+                
+                loaderText.style.opacity = 0; 
+                loaderCircle.style.opacity = 0;
+                gsap.to(loaderOverlay, { backgroundColor: "transparent", duration: 1 });
+                gsap.to(cloneText, { x: 0, y: 0, scale: 1, duration: 1.5, ease: "power3.inOut" });
+                gsap.to(cloneText, { textShadow: "0 0 0px rgba(255, 107, 53, 0)", duration: 1, delay: 0.5, ease: "power2.out", onComplete: () => { titleWrapper.style.color = "#fff"; targetI.style.color = "#fff"; mainTitle.style.color = "#fff"; cloneText.remove(); } });
+                gsap.to(cloneCircle, { rotation: 0, duration: 0.5 });
+                gsap.to(cloneCircle, { top: () => { const pos = getTargetPosition(); return (pos.rect.top + DOT_OFFSET_Y) - 5; }, left: () => { const pos = getTargetPosition(); return (pos.rect.left + (pos.rect.width/2) + DOT_OFFSET_X) - 5; }, width: 10, height: 10, borderWidth: 0, backgroundColor: "#ffffff", boxShadow: "0 0 10px 2px #fff, 0 0 20px 10px #ff6b35", borderRadius: "50%", duration: 1.5, ease: "power3.inOut", onComplete: () => cloneCircle.remove() });
+                gsap.to(cloneCircle, { opacity: 0, duration: 0.5, delay: 1, ease: "power1.in" });
+                
+                gsap.delayedCall(1.2, () => initScrollSystem(true)); 
+                const nav = document.querySelector("nav"); const subtitle = document.querySelector(".subtitle-hero"); const scrollDown = document.querySelector(".scroll-down");
+                gsap.to([nav, subtitle, scrollDown], { opacity: 1, y: 0, duration: 1, delay: 1.2, stagger: 0.2 });
+                gsap.delayedCall(1.5, () => { loaderOverlay.style.display = 'none'; });
+            });
+        }
+
+        function getTargetPosition() {
+            const targetI = document.getElementById("target-i");
+            if (!targetI) return { docX: 0, docY: 0, rect: { top:0, left:0, width:0 } };
+            const rect = targetI.getBoundingClientRect();
+            const scrollY = window.scrollY || window.pageYOffset;
+            return { docX: rect.left + (rect.width / 2) + DOT_OFFSET_X, docY: rect.top + scrollY + DOT_OFFSET_Y, rect };
+        }
+
+        let resizeObserver;
+        function initScrollSystem(shouldFadeIn = false) {
+            gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
+            const svgEl = document.getElementById("svg-stage");
+            const guideLine = document.getElementById("guide-line");
+            const litLine = document.getElementById("lit-line");
+            const orb = document.querySelector(".glow-orb");
+            orb.style.zIndex = "40"; // Derrière le texte mais au-dessus du fond
+            
+            function drawPath() {
+                ScrollTrigger.getAll().forEach(t => t.kill());
+                const width = window.innerWidth;
+                const height = document.documentElement.scrollHeight;
+                document.querySelector('.line-wrapper').style.height = height + "px";
+                svgEl.setAttribute("viewBox", `0 0 ${width} ${height}`);
+                
+                const pos = getTargetPosition();
+                const sx = pos.docX; const sy = pos.docY; const cx = width / 2;
+                
+                let d = `M ${sx} ${sy} `; 
+                d += `C ${sx} ${sy + 200}, ${cx} ${sy + 400}, ${cx} ${sy + 600} `;
+                d += `L ${cx} ${height} `; // Ligne droite centrale simple
+                
+                guideLine.setAttribute("d", d); 
+                litLine.setAttribute("d", d);
+                gsap.set(orb, { x: sx, y: sy });
+                
+                if (shouldFadeIn) { 
+                    gsap.set(orb, { opacity: 0 }); 
+                    gsap.to(orb, { opacity: 1, duration: 0.8, ease: "power2.out" }); 
+                    shouldFadeIn = false; 
+                } else { 
+                    gsap.set(orb, { opacity: 1 }); 
+                }
+                
+                gsap.to(orb, { scrollTrigger: { trigger: "body", start: "top top", end: "bottom bottom", scrub: 0.5 }, motionPath: { path: "#guide-line", align: "#guide-line", alignOrigin: [0.5, 0.5], autoRotate: false }, ease: "none" });
+                
+                const len = litLine.getTotalLength(); 
+                litLine.style.strokeDasharray = len; 
+                litLine.style.strokeDashoffset = len;
+                gsap.to(litLine, { scrollTrigger: { trigger: "body", start: "top top", end: "bottom bottom", scrub: 0.5 }, strokeDashoffset: 0, ease: "none" });
+                
+                document.querySelectorAll('.reveal-text').forEach(text => { 
+                    text.classList.remove('visible'); 
+                    ScrollTrigger.create({ trigger: text, start: "top 85%", onEnter: () => text.classList.add('visible') }); 
+                });
+                
+                ScrollTrigger.refresh();
+            }
+            drawPath();
+            
+            if (resizeObserver) resizeObserver.disconnect();
+            resizeObserver = new ResizeObserver(() => { window.requestAnimationFrame(() => drawPath()); });
+            resizeObserver.observe(document.body);
+        }
+        
+        // Active Links sur le scroll
+        const sections = document.querySelectorAll("section");
+        const navLi = document.querySelectorAll(".nav-links a");
+
+        window.addEventListener("scroll", () => {
+          let current = "";
+          sections.forEach((section) => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.clientHeight;
+            if (pageYOffset >= sectionTop - 150) {
+              current = section.getAttribute("id");
+            }
+          });
+          navLi.forEach((a) => {
+            a.classList.remove("active");
+            if (a.getAttribute("href").includes(current)) {
+              a.classList.add("active");
+            }
+          });
+        });
+
     </script>
-    <script src="script.js"></script>
 </body>
 </html>
